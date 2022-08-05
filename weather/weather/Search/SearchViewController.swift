@@ -7,17 +7,9 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class SearchViewController: UIViewController {
     
-    let cities : [City] = [
-        City(name: "Moscow"),
-        City(name: "Moscow"),
-        City(name: "Moscow"),
-        City(name: "Moscow"),
-        City(name: "Moscow"),
-        City(name: "Moscow"),
-        City(name: "Moscow")
-    ]
+    var cities : [City] = СacheManager.shared.historySearch
     
     let searchTextField: UITextField = {
         let searchTextField = UITextField()
@@ -26,8 +18,20 @@ class MainViewController: UIViewController {
         searchTextField.isHidden = false
         searchTextField.backgroundColor = .white
         searchTextField.borderStyle = .roundedRect
+        searchTextField.addTarget(self,
+                                  action: #selector(searchTextFieldDidChange(_:)),
+                                  for: .editingChanged)
         return searchTextField
     }()
+    
+    @objc
+    private func searchTextFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text, text.count > 0 {
+            cities = WeatherManager.shared.loadCitySuggestions(text)
+        } else {
+            cities = СacheManager.shared.historySearch
+        }
+    }
     
     lazy var tableViewOfSuggestions: UITableView = {
         let tableView = UITableView()
@@ -35,6 +39,7 @@ class MainViewController: UIViewController {
         tableView.register(SuggestionCell.self, forCellReuseIdentifier: "SuggestionCell")
         tableView.delegate = self
         tableView.dataSource = self
+        
         return tableView
     }()
     
@@ -69,22 +74,28 @@ class MainViewController: UIViewController {
         setLayout()
         
     }
-
 }
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+
+extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cities.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestionCell", for: indexPath) as! SuggestionCell
+        cell.configureCell(cities[indexPath.row])
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        Settings.shared.fontHeight + 8
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
 }
 
-private extension MainViewController {
+private extension SearchViewController {
     struct Constants {
         static let heightOfSearchFont: CGFloat = 48
         static let heightOfSearchTextField: CGFloat = 50

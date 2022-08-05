@@ -6,6 +6,8 @@
 //
 
 import Foundation
+
 struct City {
     let name: String
+    let lastWeather: String
 }

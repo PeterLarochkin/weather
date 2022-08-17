@@ -8,7 +8,8 @@
 import Foundation
 import UIKit
 class Settings{
-    var fontHeight: CGFloat = 45
+    var cityFontHeight: CGFloat = 45
+    var dateFontHeight: CGFloat = 22
     private init() {}
     static let shared: Settings = Settings()
 }

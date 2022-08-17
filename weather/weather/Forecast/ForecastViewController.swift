@@ -40,12 +40,12 @@ final class ForecastViewController: UIViewController {
 
 extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        0
+        5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastTableViewCell", for: indexPath) as! ForecastTableViewCell
+        cell.configureCell(Forecast(date: Date(), airHumidity: 97, temp: 32), for: .day)
+        return cell
     }
-    
-    
 }

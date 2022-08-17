@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     var cities : [City] = СacheManager.shared.historySearch
     
@@ -27,13 +27,14 @@ class SearchViewController: UIViewController {
     @objc
     private func searchTextFieldDidChange(_ textField: UITextField) {
         if let text = textField.text, text.count > 0 {
-            cities = WeatherManager.shared.loadCitySuggestions(text)
+            cities = Array(WeatherManager.shared.loadCitySuggestions(text)[..<text.count])
         } else {
             cities = СacheManager.shared.historySearch
         }
+        suggestionTableView.reloadData()
     }
     
-    lazy var tableViewOfSuggestions: UITableView = {
+    lazy var suggestionTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(SuggestionCell.self, forCellReuseIdentifier: "SuggestionCell")
@@ -45,32 +46,43 @@ class SearchViewController: UIViewController {
     
     func setLayout(){
         var constrants = [
-            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                                 constant: Constants.searchTextFieldInsets.top),
-            searchTextField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,
-                                                  constant: Constants.searchTextFieldInsets.left),
-            searchTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: Constants.searchTextFieldInsets.right),
-            searchTextField.heightAnchor.constraint(equalToConstant: Constants.heightOfSearchTextField)
+            searchTextField.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: Constants.searchTextFieldInsets.top),
+            searchTextField.leftAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leftAnchor,
+                constant: Constants.searchTextFieldInsets.left),
+            searchTextField.rightAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.rightAnchor,
+                constant: Constants.searchTextFieldInsets.right),
+            searchTextField.heightAnchor.constraint(
+                equalToConstant: Constants.heightOfSearchTextField)
         ]
         constrants += [
-            tableViewOfSuggestions.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: Constants.searchTextFieldInsets.top),
-            tableViewOfSuggestions.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,
-                                                  constant: Constants.searchTextFieldInsets.left),
-            tableViewOfSuggestions.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: Constants.searchTextFieldInsets.right),
-            tableViewOfSuggestions.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            suggestionTableView.topAnchor.constraint(
+                equalTo: searchTextField.bottomAnchor,
+                constant: Constants.searchTextFieldInsets.top),
+            suggestionTableView.leftAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leftAnchor,
+                constant: Constants.searchTextFieldInsets.left),
+            suggestionTableView.rightAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.rightAnchor,
+                constant: Constants.searchTextFieldInsets.right),
+            suggestionTableView.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constrants)
     }
     
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(searchTextField)
-        view.addSubview(tableViewOfSuggestions)
-        tableViewOfSuggestions.rowHeight = UITableView.automaticDimension
-        tableViewOfSuggestions.estimatedRowHeight = 44
+        view.addSubview(suggestionTableView)
+        suggestionTableView.rowHeight = UITableView.automaticDimension
+        suggestionTableView.estimatedRowHeight = 44
         setLayout()
         
     }
@@ -100,7 +112,6 @@ private extension SearchViewController {
         static let heightOfSearchFont: CGFloat = 48
         static let heightOfSearchTextField: CGFloat = 50
         static let searchTextFieldInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: -16, right: -16)
-        
     }
 }
 

@@ -6,15 +6,15 @@
 //
 
 import Foundation
-protocol СacheManagerProtocol {
+protocol СacheManagerProtocol: AnyObject {
     func loadHistorySearchFromMemory()-> [City]
     func saveHistorySearchIntoMemory()->()
     var historySearch: [City] { get set }
 }
 
-class СacheManager: СacheManagerProtocol {
-
-    static let shared: СacheManager = СacheManager()
+final class СacheManager: СacheManagerProtocol {
+    
+    static let shared: СacheManagerProtocol = СacheManager()
     
     private init() {
         historySearch = loadHistorySearchFromMemory()

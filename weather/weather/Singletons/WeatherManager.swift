@@ -9,11 +9,24 @@ import Foundation
 
 protocol WeatherManagerProtocol {
     func loadCitySuggestions(_ citySearchRequest: String) -> [City]
+    func loadWeatherForecast(_ city: String, _ period: Period) -> [Forecast]
 }
 
-class WeatherManager: WeatherManagerProtocol {
+struct Forecast {
+    let date: Date
+    let airHumidity: UInt
+    let temp: Int
+}
+
+enum Period {
+    case day
+    case week
+    case month
+}
+
+final class WeatherManager: WeatherManagerProtocol {
     
-    static let shared: WeatherManager = WeatherManager()
+    static let shared: WeatherManagerProtocol = WeatherManager()
     
     func loadCitySuggestions(_ citySearchRequest: String) -> [City] {
         let cities : [City] = [
@@ -36,6 +49,10 @@ class WeatherManager: WeatherManagerProtocol {
             City(name: "Moscow", lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
         ]
         return cities
+    }
+    
+    func loadWeatherForecast(_ city: String, _ period: Period) -> [Forecast] {
+        return []
     }
     private init() {}
 }

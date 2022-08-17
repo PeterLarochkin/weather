@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SuggestionCell: UITableViewCell {
+final class SuggestionCell: UITableViewCell {
     
     var cityLabel: UILabel = {
         let label = UILabel()

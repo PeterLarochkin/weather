@@ -40,7 +40,6 @@ final class SearchViewController: UIViewController {
         tableView.register(SuggestionCell.self, forCellReuseIdentifier: "SuggestionCell")
         tableView.delegate = self
         tableView.dataSource = self
-        
         return tableView
     }()
     
@@ -84,7 +83,6 @@ final class SearchViewController: UIViewController {
         suggestionTableView.rowHeight = UITableView.automaticDimension
         suggestionTableView.estimatedRowHeight = 44
         setLayout()
-        
     }
 }
 
@@ -103,7 +101,12 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         Settings.shared.cityFontHeight + 8
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        tableView.deselectRow(at: indexPath, animated: false)
+        self.modalPresentationStyle = .overFullScreen
+        self.present(
+            ForecastViewController(),
+            animated: true,
+            completion: nil)
     }
 }
 

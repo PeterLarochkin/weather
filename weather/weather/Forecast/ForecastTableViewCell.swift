@@ -40,9 +40,7 @@ final class ForecastTableViewCell: UITableViewCell {
         label.font = .systemFont(
             ofSize: Settings.shared.dateFontHeight,
             weight: .regular)
-        label.textColor = .gray
-        label.layer.shadowOffset = CGSize(width: 3, height: 0)
-        label.layer.shadowOpacity = 1
+        label.textColor = .blue
         label.text = "☔"
         return label
     }()
@@ -51,7 +49,7 @@ final class ForecastTableViewCell: UITableViewCell {
         var constraints = [
             dateLabel.leftAnchor.constraint(
                 equalTo: self.leftAnchor,
-                constant: 8),
+                constant: 20),
             dateLabel.topAnchor.constraint(
                 equalTo: self.topAnchor,
                 constant: 4),
@@ -94,7 +92,7 @@ final class ForecastTableViewCell: UITableViewCell {
     
     func configureCell(_ forecast: Forecast, for period: Period){
         self.humidityLabel.text = "\(forecast.airHumidity)%"
-        self.tempLabel.text = "\(forecast.temp)%"
+        self.tempLabel.text = "| \(forecast.temp)°C"
         let calendar = Calendar.current
         switch period {
         case .day:
@@ -113,6 +111,9 @@ final class ForecastTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(dateLabel)
+        addSubview(tempLabel)
+        addSubview(humidityLabel)
+        setLayout()
         
     }
     

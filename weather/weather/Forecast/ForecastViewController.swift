@@ -4,7 +4,7 @@
 //
 //  Created by Петр Ларочкин on 17.08.2022.
 //
-
+import Foundation
 import UIKit
 import Charts
 
@@ -12,7 +12,7 @@ final class ForecastViewController: UIViewController {
     
     lazy var chartView: LineChartView = {
         let chartView = LineChartView()
-        
+        chartView.delegate = self
         chartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.backgroundColor = .systemGray6
         chartView.isHidden = false
@@ -21,6 +21,8 @@ final class ForecastViewController: UIViewController {
         chartView.clipsToBounds = true
         return chartView
     }()
+    
+    var currentForecast: [Forecast] = WeatherManager.shared.loadWeatherForecast("Hello", .day)
     
     let periodSegmentControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["День", "Неделя", "Месяц"])
@@ -102,6 +104,15 @@ final class ForecastViewController: UIViewController {
         return label
     }()
     
+    func setData() {
+        let set1 = LineChartDataSet(
+            entries: Array(0..<currentForecast.count).map {index in
+                ChartDataEntry(x: Double(index), y: Double(currentForecast[index].temp))
+            }, label: "Forecast")
+        let data = LineChartData(dataSet: set1)
+        chartView.data = data
+    }
+    
     func setLayout() {
         var constraints = [
             titleLabel.topAnchor.constraint(
@@ -179,17 +190,18 @@ final class ForecastViewController: UIViewController {
         forecastTableView.isHidden = true
         titleLabel.text = "Hello"
         setLayout()
+        setData()
     }
 }
 
 extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        31
+        currentForecast.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastTableViewCell", for: indexPath) as! ForecastTableViewCell
-        cell.configureCell(Forecast(date: Date(), airHumidity: 97, temp: 32), for: .day)
+        cell.configureCell(currentForecast[indexPath.row], for: .day)
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -198,5 +210,7 @@ extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension ForecastViewController: ChartViewDelegate {
-    
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        print(entry)
+    }
 }

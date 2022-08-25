@@ -52,7 +52,15 @@ final class WeatherManager: WeatherManagerProtocol {
     }
     
     func loadWeatherForecast(_ city: String, _ period: Period) -> [Forecast] {
-        return []
+        switch period {
+        case .day:
+            return Array(repeating: Forecast(date: Date(), airHumidity: Array(55..<95).randomElement()!, temp: Array(1..<38).randomElement()!), count: 24)
+        case .week:
+            return Array(repeating: Forecast(date: Date(), airHumidity: Array(55..<95).randomElement()!, temp: Array(1..<38).randomElement()!), count: 7)
+        case .month:
+            return Array(repeating: Forecast(date: Date(), airHumidity: Array(55..<95).randomElement()!, temp: Array(1..<38).randomElement()!), count: 31)
+        }
+        
     }
     private init() {}
 }

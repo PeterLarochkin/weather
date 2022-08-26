@@ -21,7 +21,7 @@
 		2A8F373628B27614005CBA26 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 2A8F373528B27614005CBA26 /* Charts */; };
 		2AB12AAE28B728CD00697743 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB12AAD28B728CD00697743 /* ViewController.swift */; };
 		2AB12AB028B72AD100697743 /* CardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB12AAF28B72AD100697743 /* CardLayout.swift */; };
-		2AB12AB428B72C3500697743 /* WalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB12AB328B72C3500697743 /* WalletCell.swift */; };
+		2AB12AB428B72C3500697743 /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB12AB328B72C3500697743 /* CardCell.swift */; };
 		2ACA2CE728ACC0D9007F5DFC /* ForecastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACA2CE628ACC0D9007F5DFC /* ForecastViewController.swift */; };
 		2ACA2CE928ACC419007F5DFC /* ForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACA2CE828ACC419007F5DFC /* ForecastTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -42,7 +42,7 @@
 		2A84385E288859560012872E /* SuggestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionCell.swift; sourceTree = "<group>"; };
 		2AB12AAD28B728CD00697743 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2AB12AAF28B72AD100697743 /* CardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardLayout.swift; sourceTree = "<group>"; };
-		2AB12AB328B72C3500697743 /* WalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCell.swift; sourceTree = "<group>"; };
+		2AB12AB328B72C3500697743 /* CardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
 		2ACA2CE628ACC0D9007F5DFC /* ForecastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewController.swift; sourceTree = "<group>"; };
 		2ACA2CE828ACC419007F5DFC /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,7 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				2AB12AAD28B728CD00697743 /* ViewController.swift */,
-				2AB12AB328B72C3500697743 /* WalletCell.swift */,
+				2AB12AB328B72C3500697743 /* CardCell.swift */,
 				2AB12AAF28B72AD100697743 /* CardLayout.swift */,
 				2A84384528884A400012872E /* AppDelegate.swift */,
 				2A84384728884A400012872E /* SceneDelegate.swift */,
@@ -200,7 +200,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A84385028884A400012872E /* weather.xcdatamodeld in Sources */,
-				2AB12AB428B72C3500697743 /* WalletCell.swift in Sources */,
+				2AB12AB428B72C3500697743 /* CardCell.swift in Sources */,
 				2A6A7958289C2189006038CB /* CacheManager.swift in Sources */,
 				2A84385D288858C90012872E /* City.swift in Sources */,
 				2A6A7956289C1EA5006038CB /* WeatherManager.swift in Sources */,

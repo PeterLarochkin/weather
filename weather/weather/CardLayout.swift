@@ -61,7 +61,7 @@ class CardLayout: UICollectionViewLayout {
             if let indexExpand = delegateIndexOfSelectedRow?.indexOfSelectedRow(), indexExpand == index {
                 self.nextIndexPath = index+1
                 contentHeight =
-                CGFloat(numberOfItems) * shortHeightOfCard + 10 * (longHeightOfCard - shortHeightOfCard)
+                CGFloat(numberOfItems) * shortHeightOfCard + 2 * (longHeightOfCard - shortHeightOfCard)
             } else {
                 contentHeight =
                     CGFloat(numberOfItems) * shortHeightOfCard + (longHeightOfCard - shortHeightOfCard)
@@ -120,9 +120,5 @@ class CardLayout: UICollectionViewLayout {
         frame.origin = frameOrigin
         return frame
     }
-    func getCardSize() -> CGFloat{
-        return longHeightOfCard
-    }
-    
 }
 

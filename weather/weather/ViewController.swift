@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Charts
 protocol HasIndexOfSelectedRow: AnyObject {
     func indexOfSelectedRow()-> Int?
 }
@@ -39,7 +40,7 @@ class ViewController: UIViewController {
         }
         let layout = CardLayout()
         collectionView.collectionViewLayout = layout
-        collectionView.register(WalletCell.self, forCellWithReuseIdentifier: "WalletCell")
+        collectionView.register(CardCell.self, forCellWithReuseIdentifier: "WalletCell")
         collectionView.delegate = self
         collectionView.dataSource = self
         layout.delegateIndexOfSelectedRow = self
@@ -52,8 +53,8 @@ extension ViewController: UICollectionViewDataSource {
         return virtualCardList.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell:WalletCell = collectionView.dequeueReusableCell(withReuseIdentifier: "WalletCell", for: indexPath) as! WalletCell
-//        cell.setupImage(imageString: virtualCardList[indexPath.row])
+        let cell:CardCell = collectionView.dequeueReusableCell(withReuseIdentifier: "WalletCell", for: indexPath) as! CardCell
+        cell.configureCell("\(indexPath.row) August", Array(25..<32).randomElement()!, LineChartData())
         return cell
     }
 }

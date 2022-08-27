@@ -9,9 +9,7 @@ import UIKit
 import Charts
 
 final class CardCell: UICollectionViewCell {
-    
     let emojiStates: [String] = ["🌤", "⛅", "🌦", "🌧", "⛈", "🌩", "☁️" , "☀️", "🌨", "🧣"]
-    
     var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -28,6 +26,7 @@ final class CardCell: UICollectionViewCell {
         return label
     }()
     
+    
     lazy var chartView: LineChartView = {
         let chartView = LineChartView()
         chartView.delegate = self
@@ -40,65 +39,82 @@ final class CardCell: UICollectionViewCell {
         return chartView
     }()
     
+    func setData(_ data: [ChartDataEntry]){
+        let chartData = LineChartData(
+            dataSet: LineChartDataSet(
+                entries: data,
+                label: "Forecast"))
+        chartView.data = chartData
+    }
+    
     func setLayout() {
         let constraints = [
-            dateLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 4),
-            dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
-            dateLabel.rightAnchor.constraint(equalTo: self.centerXAnchor),
-            dateLabel.heightAnchor.constraint(equalToConstant: Settings.shared.dateFontHeight),
+            dateLabel.leftAnchor.constraint(
+                equalTo: self.leftAnchor,
+                constant: Settings.shared.standartOffSets.left),
+            dateLabel.topAnchor.constraint(
+                equalTo: self.topAnchor,
+                constant: Settings.shared.standartOffSets.top),
+            dateLabel.rightAnchor.constraint(
+                equalTo: self.centerXAnchor),
+            dateLabel.heightAnchor.constraint(
+                equalToConstant:
+                    Settings.shared.dateFontHeight + 2 * Settings.shared.standartOffSets.top),
             
-            tempLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4),
-            tempLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
-            tempLabel.leftAnchor.constraint(equalTo: dateLabel.rightAnchor),
-            tempLabel.heightAnchor.constraint(equalTo: dateLabel.heightAnchor),
+            tempLabel.rightAnchor.constraint(
+                equalTo: self.rightAnchor,
+                constant: Settings.shared.standartOffSets.right),
+            tempLabel.topAnchor.constraint(
+                equalTo: self.topAnchor,
+                constant: Settings.shared.standartOffSets.top),
+            tempLabel.leftAnchor.constraint(
+                equalTo: dateLabel.rightAnchor),
+            tempLabel.heightAnchor.constraint(
+                equalTo: dateLabel.heightAnchor),
             
-//            chartView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor),
-//            chartView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 4),
-//            chartView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4),
-//            chartView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4)
+            chartView.topAnchor.constraint(
+                equalTo: self.topAnchor,
+                constant: Settings.shared.shortHeightOfCard),
+            chartView.leftAnchor.constraint(
+                equalTo: self.leftAnchor,
+                constant: Settings.shared.standartOffSets.left),
+            chartView.rightAnchor.constraint(
+                equalTo: self.rightAnchor,
+                constant: Settings.shared.standartOffSets.right),
+            chartView.bottomAnchor.constraint(
+                equalTo: self.bottomAnchor,
+                constant: Settings.shared.standartOffSets.bottom)
         ]
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configureCell(_ date: String/*Date*/, _ averageTempOfDay: Int, _ dataOfAllDay: LineChartData){
-//        let calendar = Calendar.current
-//        self.dateLabel.text = "\(calendar.component(.day, from: date)) August"
-        self.dateLabel.text = date
-        self.tempLabel.text = "\(averageTempOfDay)°C " + emojiStates.randomElement()!
+    func configureCell(_ forecast: Forecast,_ data: [ChartDataEntry]){
+        self.dateLabel.text = (forecast.date.description)
+        self.tempLabel.text = "\(forecast.temp)°C " + emojiStates.randomElement()!
+        setData(data)
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.layer.cornerRadius = 10
-        self.layer.borderColor = UIColor.black.cgColor
-        self.layer.borderWidth = 3
-        backgroundColor = .white
+        backgroundColor = .systemGray6
         addViews()
         setLayout()
     }
     func addViews() {
         self.addSubview(dateLabel)
         self.addSubview(tempLabel)
+        self.addSubview(chartView)
     }
-
-    func setData() {
-        let set1 = LineChartDataSet(
-            entries: Array(0..<30).map {index in
-                ChartDataEntry(x: Double(index), y: Double(Array(0..<30).randomElement()!))
-            }, label: "Forecast")
-        let data = LineChartData(dataSet: set1)
-        chartView.data = data
-    }
-
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }
 
 extension CardCell:ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         print(entry)
     }
+    
 }

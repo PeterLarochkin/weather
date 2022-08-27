@@ -97,8 +97,6 @@ final class ForecastTableViewCell: UITableViewCell {
         switch period {
         case .day:
             self.dateLabel.text = "\(calendar.component(.hour, from: forecast.date)) hour in day"
-        case .week:
-            self.dateLabel.text = "\(calendar.component(.day, from: forecast.date)) day in week"
         case .month:
             self.dateLabel.text = "\(calendar.component(.day, from: forecast.date)) day in month"
         }

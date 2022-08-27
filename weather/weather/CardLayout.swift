@@ -10,8 +10,6 @@ import UIKit
 
 class CardLayout: UICollectionViewLayout {
 //    https://manikarthi-vaiha.medium.com/apple-wallet-app-design-in-ios-c292304fcc13
-    var shortHeightOfCard: CGFloat = 50
-    var longHeightOfCard: CGFloat = 250
     var bottomOffsetOfExpandedCard: CGFloat = 10
     var contentHeight: CGFloat = 0.0
     var cachedAttributes = [UICollectionViewLayoutAttributes]()
@@ -33,8 +31,8 @@ class CardLayout: UICollectionViewLayout {
         let collection = collectionView!
         size.width = collection.bounds.size.width
         if let _ = delegateIndexOfSelectedRow?.indexOfSelectedRow() {
-            size.height = contentHeight + longHeightOfCard
-        }else{
+            size.height = contentHeight + Settings.shared.longHeightOfCard
+        } else {
             size.height = contentHeight
         }
 //        print("Contend", contentHeight)
@@ -61,10 +59,10 @@ class CardLayout: UICollectionViewLayout {
             if let indexExpand = delegateIndexOfSelectedRow?.indexOfSelectedRow(), indexExpand == index {
                 self.nextIndexPath = index+1
                 contentHeight =
-                CGFloat(numberOfItems) * shortHeightOfCard + 2 * (longHeightOfCard - shortHeightOfCard)
+                CGFloat(numberOfItems) * Settings.shared.shortHeightOfCard + 2 * (Settings.shared.longHeightOfCard - Settings.shared.shortHeightOfCard)
             } else {
                 contentHeight =
-                    CGFloat(numberOfItems) * shortHeightOfCard + (longHeightOfCard - shortHeightOfCard)
+                CGFloat(numberOfItems) * Settings.shared.shortHeightOfCard + (Settings.shared.longHeightOfCard - Settings.shared.shortHeightOfCard)
             }
             layout.zIndex = index
             layout.isHidden = false
@@ -99,22 +97,22 @@ class CardLayout: UICollectionViewLayout {
         var frame = CGRect(
             origin: CGPoint(x: CGFloat(0), y:0),
             size: CGSize(
-                width: UIScreen.main.bounds.width,
-                height: longHeightOfCard))
+                width: (collectionView?.bounds.size.width ?? UIScreen.main.bounds.width),
+                height: Settings.shared.longHeightOfCard))
         var frameOrigin = frame.origin
         if let indexExpand = delegateIndexOfSelectedRow?.indexOfSelectedRow() {
             if index > 0 {
                 if indexExpand < index {
                     let spacesHeight =
-                        shortHeightOfCard * CGFloat(index) + (longHeightOfCard - shortHeightOfCard) + bottomOffsetOfExpandedCard
+                    Settings.shared.shortHeightOfCard * CGFloat(index) + (Settings.shared.longHeightOfCard - Settings.shared.shortHeightOfCard) + bottomOffsetOfExpandedCard
                     frameOrigin.y = spacesHeight
                 } else {
-                    frameOrigin.y = CGFloat((shortHeightOfCard * CGFloat(index)))
+                    frameOrigin.y = CGFloat((Settings.shared.shortHeightOfCard * CGFloat(index)))
                 }
             }
         } else {
             if index > 0 {
-                frameOrigin.y = CGFloat((shortHeightOfCard * CGFloat(index)))
+                frameOrigin.y = CGFloat((Settings.shared.shortHeightOfCard * CGFloat(index)))
             }
         }
         frame.origin = frameOrigin

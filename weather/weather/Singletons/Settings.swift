@@ -7,10 +7,15 @@
 
 import Foundation
 import UIKit
-class Settings{
+class Settings {
+    
     var cityFontHeight: CGFloat = 45
     var dateFontHeight: CGFloat = 25
-    private init() {}
+    var shortHeightOfCard: CGFloat = 50
+    var longHeightOfCard: CGFloat = 250
+    var standartOffSets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: -4, right: -4)
+    
     static let shared: Settings = Settings()
+    private init() {}
 }
 

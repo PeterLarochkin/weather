@@ -30,7 +30,9 @@ final class ForecastTableViewCell: UITableViewCell {
             ofSize: Settings.shared.dateFontHeight,
             weight: .regular)
         label.textColor = .gray
+        label.textAlignment = .right
         label.text = "🌡️"
+        label.backgroundColor = .systemGray
         return label
     }()
     
@@ -41,12 +43,14 @@ final class ForecastTableViewCell: UITableViewCell {
             ofSize: Settings.shared.dateFontHeight,
             weight: .regular)
         label.textColor = .blue
+        label.textAlignment = .right
+        label.backgroundColor = .systemGray
         label.text = "☔"
         return label
     }()
     
     private func setLayout(){
-        var constraints = [
+        let constraints = [
             dateLabel.leftAnchor.constraint(
                 equalTo: self.leftAnchor,
                 constant: 20),
@@ -57,10 +61,19 @@ final class ForecastTableViewCell: UITableViewCell {
                 equalTo: self.bottomAnchor,
                 constant: -4),
             dateLabel.rightAnchor.constraint(
-                equalTo: humidityLabel.leftAnchor,
-                constant: -4)
-        ]
-        constraints += [
+                equalTo: self.centerXAnchor,
+                constant: -4),
+            humidityLabel.leftAnchor.constraint(
+                equalTo: self.centerXAnchor,
+                constant: -4),
+            humidityLabel.topAnchor.constraint(
+                equalTo: self.topAnchor,
+                constant: 4),
+            humidityLabel.bottomAnchor.constraint(
+                equalTo: self.bottomAnchor,
+                constant: -4),
+            humidityLabel.widthAnchor.constraint(
+                equalTo: tempLabel.widthAnchor),
             tempLabel.rightAnchor.constraint(
                 equalTo: self.rightAnchor,
                 constant: -8),
@@ -71,34 +84,20 @@ final class ForecastTableViewCell: UITableViewCell {
                 equalTo: self.bottomAnchor,
                 constant: -4),
             tempLabel.widthAnchor.constraint(
-                equalToConstant: 3 * Settings.shared.dateFontHeight)
-        ]
-        constraints += [
-            humidityLabel.rightAnchor.constraint(
-                equalTo: tempLabel.leftAnchor,
-                constant: -4),
-            humidityLabel.topAnchor.constraint(
-                equalTo: self.topAnchor,
-                constant: 4),
-            humidityLabel.bottomAnchor.constraint(
-                equalTo: self.bottomAnchor,
-                constant: -4),
-            tempLabel.widthAnchor.constraint(
-                equalToConstant: 3 * Settings.shared.dateFontHeight)
-            
+                equalToConstant: 5 * Settings.shared.dateFontHeight),
         ]
         NSLayoutConstraint.activate(constraints)
     }
     
     func configureCell(_ forecast: Forecast, for period: Period){
         self.humidityLabel.text = "\(forecast.airHumidity)%"
-        self.tempLabel.text = "| \(forecast.temp)°C"
+        self.tempLabel.text = " \(forecast.temp)°C " + forecast.emojiState
         let calendar = Calendar.current
         switch period {
         case .day:
-            self.dateLabel.text = "\(calendar.component(.hour, from: forecast.date)) hour in day"
+            self.dateLabel.text = "\(calendar.component(.hour, from: forecast.date)) hour"
         case .month:
-            self.dateLabel.text = "\(calendar.component(.day, from: forecast.date)) day in month"
+            self.dateLabel.text = "\(calendar.component(.day, from: forecast.date)) day"
         }
         
     }

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 class Settings {
     var cityFontHeight: CGFloat = 45
-    var dateFontHeight: CGFloat = 25
+    var dateFontHeight: CGFloat = 15
     var shortHeightOfCard: CGFloat = 50
     var longHeightOfCard: CGFloat = 250
     var standartOffSets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: -4, right: -4)

@@ -27,11 +27,11 @@ final class CardCell: UICollectionViewCell {
     }()
     
     
-    lazy var chartView: BarChartView = {
-        let chartView = BarChartView()
+    lazy var chartView: LineChartView = {
+        let chartView = LineChartView()
         chartView.delegate = self
         chartView.translatesAutoresizingMaskIntoConstraints = false
-        chartView.backgroundColor = .systemGray2
+        chartView.backgroundColor = .clear
         chartView.isHidden = false
         chartView.alpha = 1
         chartView.layer.cornerRadius = 10
@@ -45,31 +45,47 @@ final class CardCell: UICollectionViewCell {
         chartView.doubleTapToZoomEnabled = true
         chartView.scaleXEnabled = false
         chartView.scaleYEnabled = false
+        chartView.xAxis.labelPosition = .bottom
         chartView.isMultipleTouchEnabled = false
         chartView.drawGridBackgroundEnabled = false
+        chartView.zoomToCenter(scaleX: 4, scaleY: 1)
+        chartView.xAxis.drawGridLinesEnabled = false
+        chartView.xAxis.labelFont = UIFont.boldSystemFont(ofSize: Settings.shared.dateFontHeight / 1.5)
+        chartView.highlightPerTapEnabled = false
+        chartView.dragYEnabled = false
+        chartView.dragDecelerationEnabled = true
+        chartView.highlightPerDragEnabled = false
+        chartView.extraBottomOffset = chartView.xAxis.labelFont.xHeight
+        chartView.moveViewToX(3)
+        chartView.xAxis.axisLineColor = .clear
         return chartView
     }()
     
-    func setData(_ data: [BarChartDataEntry]){
-//        let lineSet = LineChartDataSet(
-//            entries: data)
-        let barSet = BarChartDataSet(entries: data)
-        barSet.visible = true
+    func setData(_ data: [ChartDataEntry]){
+        let lineSet = LineChartDataSet(
+            entries: data)
+        lineSet.mode = .horizontalBezier
+        lineSet.lineWidth = 3
+        lineSet.drawValuesEnabled = true
+        lineSet.setColor(NSUIColor(red: 107/255, green: 243/255, blue: 173/255, alpha: 1))
+        lineSet.fill = Fill(color: NSUIColor(red: 107/255, green: 243/255, blue: 173/255, alpha: 1))
+        lineSet.fillAlpha = 0.78
+        lineSet.drawFilledEnabled = true
+        lineSet.circleRadius = 0
+        lineSet.valueFont = .boldSystemFont(ofSize: Settings.shared.dateFontHeight)
+        lineSet.drawCirclesEnabled = false
+        lineSet.valueFormatter = DefaultValueFormatter(decimals: 0)
+        let chartData = LineChartData(dataSet: lineSet)
+        chartData.setDrawValues(true)
+        chartData.setValueTextColor(.black)
+        chartView.alpha = 0
+        self.chartView.data = chartData
+        UIView.animate(withDuration: 0.2, animations: {
+            self.chartView.alpha = 1
+        })
         
-        let barData = BarChartData(dataSet: barSet)
         
-//        set.mode = .cubicBezier
-//        set.lineWidth = 3
-//        set.drawValuesEnabled = true
-//        set.setColor(.white)
-//        set.fill = Fill(color: .white)
-//        set.fillAlpha = 0.78
-//        set.drawFilledEnabled = true
-//        let chartData = LineChartData(dataSet: set)
-        
-        
-        barData.setDrawValues(true)
-        chartView.data = barData
+
     }
     
     func setLayout() {
@@ -113,8 +129,11 @@ final class CardCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configureCell(_ forecast: Forecast,_ data: [BarChartDataEntry], _ isVisible: Bool){
-        self.dateLabel.text = (forecast.date.description)
+    func configureCell(_ forecast: Forecast,_ data: [ChartDataEntry], _ isVisible: Bool){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM"
+        
+        self.dateLabel.text = formatter.string(from: forecast.date)
         self.tempLabel.text = "\(forecast.temp)°C " + emojiStates.randomElement()!
         if isVisible {
             self.chartView.isHidden = false
@@ -126,7 +145,8 @@ final class CardCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemGray6
+        backgroundColor = .white
+        layer.cornerRadius = 10
         addViews()
         setLayout()
     }

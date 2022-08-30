@@ -102,7 +102,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        let vc = ForecastViewController()
+        let vc = CardController()
         vc.modalPresentationStyle = .fullScreen
         self.present(
             vc,

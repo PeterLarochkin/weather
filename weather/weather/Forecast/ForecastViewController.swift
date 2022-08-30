@@ -23,14 +23,7 @@ final class ForecastViewController: UIViewController {
     }()
     
     var currentForecast: [Forecast] = WeatherManager.shared.loadWeatherForecast("Hello", .day,  Date(),  Date())
-    
-    let periodSegmentControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["День", "Неделя", "Месяц"])
-        segmentedControl.selectedSegmentIndex = 2
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        return segmentedControl
-    }()
-    
+
     let changeButton: UIButton = {
         let button = UIButton()
         button.addTarget(
@@ -114,66 +107,55 @@ final class ForecastViewController: UIViewController {
     }
     
     func setLayout() {
-        var constraints = [
+        let constraints = [
             titleLabel.topAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.topAnchor,
-                constant: 4),
+                constant: Settings.shared.standartOffSets.top),
             titleLabel.leftAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.leftAnchor,
-                constant: 8),
+                constant: Settings.shared.standartOffSets.left),
             titleLabel.rightAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.rightAnchor,
-                constant: -8),
+                constant: Settings.shared.standartOffSets.right),
             titleLabel.heightAnchor.constraint(
-                equalToConstant: Settings.shared.cityFontHeight + 8)
-        ]
-        constraints += [
+                equalToConstant: Settings.shared.cityFontHeight + 8),
+            
             forecastTableView.topAnchor.constraint(
                 equalTo: titleLabel.bottomAnchor),
             forecastTableView.leftAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.leftAnchor,
-                constant: 8),
+                constant: Settings.shared.standartOffSets.left),
             forecastTableView.rightAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.rightAnchor,
-                constant: -8),
+                constant: Settings.shared.standartOffSets.right),
             forecastTableView.bottomAnchor.constraint(
                 equalTo: changeButton.topAnchor,
-                constant: -8)
-        ]
-        constraints += [
+                constant: Settings.shared.standartOffSets.bottom),
+            
             chartView.topAnchor.constraint(
                 equalTo: titleLabel.bottomAnchor),
             chartView.leftAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.leftAnchor,
-                constant: 8),
+                constant: Settings.shared.standartOffSets.left),
             chartView.rightAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.rightAnchor,
-                constant: -8),
+                constant: Settings.shared.standartOffSets.right),
             chartView.bottomAnchor.constraint(
                 equalTo: changeButton.topAnchor,
-                constant: -8)
-        ]
-        constraints += [
+                constant: Settings.shared.standartOffSets.bottom),
+            
             changeButton.leftAnchor.constraint(
                 equalTo: forecastTableView.leftAnchor),
             changeButton.rightAnchor.constraint(
                 equalTo: forecastTableView.rightAnchor),
             changeButton.heightAnchor.constraint(
-                equalTo: periodSegmentControl.heightAnchor,
-                multiplier: 1.2)
-        ]
-        constraints += [
-            periodSegmentControl.topAnchor.constraint(
-                equalTo: changeButton.bottomAnchor, constant: 8),
-            periodSegmentControl.leftAnchor.constraint(
-                equalTo: forecastTableView.leftAnchor),
-            periodSegmentControl.rightAnchor.constraint(
-                equalTo: forecastTableView.rightAnchor),
-            periodSegmentControl.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -8),
-            periodSegmentControl.heightAnchor.constraint(
-                equalToConstant: Settings.shared.dateFontHeight + 16)
+                equalToConstant:
+                    Settings.shared.cityFontHeight +
+                    Settings.shared.standartOffSets.top +
+                    Settings.shared.standartOffSets.bottom),
+            changeButton.bottomAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
+                constant: Settings.shared.standartOffSets.bottom)
         ]
         NSLayoutConstraint.activate(constraints)
         
@@ -185,7 +167,6 @@ final class ForecastViewController: UIViewController {
         view.addSubview(forecastTableView)
         view.addSubview(titleLabel)
         view.addSubview(changeButton)
-        view.addSubview(periodSegmentControl)
         view.addSubview(chartView)
         forecastTableView.isHidden = true
         titleLabel.text = "Hello"

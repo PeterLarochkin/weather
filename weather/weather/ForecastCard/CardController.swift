@@ -63,7 +63,7 @@ extension CardController: UICollectionViewDataSource {
         let dayForecast = WeatherManager.shared.loadWeatherForecast(currentCityId, .day,  Date(),  Date())
         
         let chartData = dayForecast.enumerated().map { index, forecast in
-            BarChartDataEntry(x: Double(index), y: Double(forecast.temp))
+            ChartDataEntry(x: Double(index + 1), y: Double(forecast.temp))
         }
         cell.configureCell(
             forecasts[indexPath.row],
@@ -88,11 +88,11 @@ extension CardController: UICollectionViewDelegate, UICollectionViewDelegateFlow
                             let dayForecast = WeatherManager.shared.loadWeatherForecast(self.currentCityId, .day,  Date(),  Date())
 
                             let chartData = dayForecast.enumerated().map { index, forecast in
-                                BarChartDataEntry(x: Double(index), y: Double(forecast.temp))
+                                BarChartDataEntry(x: Double(index+1), y: Double(forecast.temp))
                             }
-                            cell.setData(chartData)
                             cell.chartView.isHidden = false
-
+                            cell.setData(chartData)
+                            
                         }
                         
                         

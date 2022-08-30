@@ -27,24 +27,49 @@ final class CardCell: UICollectionViewCell {
     }()
     
     
-    lazy var chartView: LineChartView = {
-        let chartView = LineChartView()
+    lazy var chartView: BarChartView = {
+        let chartView = BarChartView()
         chartView.delegate = self
         chartView.translatesAutoresizingMaskIntoConstraints = false
-        chartView.backgroundColor = .systemGray6
+        chartView.backgroundColor = .systemGray2
         chartView.isHidden = false
         chartView.alpha = 1
         chartView.layer.cornerRadius = 10
         chartView.clipsToBounds = true
+        chartView.rightAxis.enabled = false
+        chartView.leftAxis.enabled = false
+        chartView.xAxis.enabled = true
+        chartView.legend.enabled = false
+        chartView.pinchZoomEnabled = false
+        chartView.dragEnabled = true
+        chartView.doubleTapToZoomEnabled = true
+        chartView.scaleXEnabled = false
+        chartView.scaleYEnabled = false
+        chartView.isMultipleTouchEnabled = false
+        chartView.drawGridBackgroundEnabled = false
         return chartView
     }()
     
-    func setData(_ data: [ChartDataEntry]){
-        let chartData = LineChartData(
-            dataSet: LineChartDataSet(
-                entries: data,
-                label: "Forecast"))
-        chartView.data = chartData
+    func setData(_ data: [BarChartDataEntry]){
+//        let lineSet = LineChartDataSet(
+//            entries: data)
+        let barSet = BarChartDataSet(entries: data)
+        barSet.visible = true
+        
+        let barData = BarChartData(dataSet: barSet)
+        
+//        set.mode = .cubicBezier
+//        set.lineWidth = 3
+//        set.drawValuesEnabled = true
+//        set.setColor(.white)
+//        set.fill = Fill(color: .white)
+//        set.fillAlpha = 0.78
+//        set.drawFilledEnabled = true
+//        let chartData = LineChartData(dataSet: set)
+        
+        
+        barData.setDrawValues(true)
+        chartView.data = barData
     }
     
     func setLayout() {
@@ -88,10 +113,15 @@ final class CardCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configureCell(_ forecast: Forecast,_ data: [ChartDataEntry]){
+    func configureCell(_ forecast: Forecast,_ data: [BarChartDataEntry], _ isVisible: Bool){
         self.dateLabel.text = (forecast.date.description)
         self.tempLabel.text = "\(forecast.temp)°C " + emojiStates.randomElement()!
-        setData(data)
+        if isVisible {
+            self.chartView.isHidden = false
+            setData(data)
+        } else {
+            self.chartView.isHidden = true
+        }
     }
     
     override init(frame: CGRect) {

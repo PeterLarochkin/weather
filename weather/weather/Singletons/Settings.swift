@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 class Settings {
-    
     var cityFontHeight: CGFloat = 45
     var dateFontHeight: CGFloat = 25
     var shortHeightOfCard: CGFloat = 50

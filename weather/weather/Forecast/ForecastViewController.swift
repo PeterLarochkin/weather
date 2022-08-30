@@ -22,7 +22,7 @@ final class ForecastViewController: UIViewController {
         return chartView
     }()
     
-    var currentForecast: [Forecast] = WeatherManager.shared.loadWeatherForecast("Hello", .day)
+    var currentForecast: [Forecast] = WeatherManager.shared.loadWeatherForecast("Hello", .day,  Date(),  Date())
     
     let periodSegmentControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["День", "Неделя", "Месяц"])

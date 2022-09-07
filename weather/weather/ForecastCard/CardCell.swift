@@ -15,6 +15,7 @@ final class CardCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .boldSystemFont(ofSize: Settings.shared.dateFontHeight)
         label.textAlignment = .left
+        label.textColor = .black
         return label
     }()
     
@@ -58,6 +59,7 @@ final class CardCell: UICollectionViewCell {
         chartView.extraBottomOffset = chartView.xAxis.labelFont.xHeight
         chartView.moveViewToX(3)
         chartView.xAxis.axisLineColor = .clear
+//        chartView.animate(yAxisDuration: 0.2)
         return chartView
     }()
     
@@ -83,7 +85,6 @@ final class CardCell: UICollectionViewCell {
         UIView.animate(withDuration: 0.2, animations: {
             self.chartView.alpha = 1
         })
-        
         
 
     }

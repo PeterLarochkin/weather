@@ -1,22 +1,35 @@
 //
-//  ViewController.swift
+//  SearchViewController.swift
 //  weather
 //
-//  Created by Петр Ларочкин on 20.07.2022.
+//  Created by Петр Ларочкин on 05.09.2022.
+//  
 //
+
 
 import UIKit
 
 final class SearchViewController: UIViewController {
     
-    var cities : [City] = СacheManager.shared.historySearch
+    var cities : [City] = []
+    private let output: SearchViewOutput?
+
+    init(output: SearchViewOutput) {
+        self.output = output
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let searchTextField: UITextField = {
         let searchTextField = UITextField()
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         searchTextField.font = .boldSystemFont(ofSize: Constants.heightOfSearchFont)
         searchTextField.isHidden = false
-        searchTextField.backgroundColor = .white
+        searchTextField.backgroundColor = .systemGray6
         searchTextField.borderStyle = .roundedRect
         searchTextField.addTarget(self,
                                   action: #selector(searchTextFieldDidChange(_:)),
@@ -24,15 +37,7 @@ final class SearchViewController: UIViewController {
         return searchTextField
     }()
     
-    @objc
-    private func searchTextFieldDidChange(_ textField: UITextField) {
-        if let text = textField.text, text.count > 0 {
-            cities = Array(WeatherManager.shared.loadCitySuggestions(text)[..<text.count])
-        } else {
-            cities = СacheManager.shared.historySearch
-        }
-        suggestionTableView.reloadData()
-    }
+    
     
     lazy var suggestionTableView: UITableView = {
         let tableView = UITableView()
@@ -44,7 +49,7 @@ final class SearchViewController: UIViewController {
     }()
     
     func setLayout(){
-        var constrants = [
+        let constrants = [
             searchTextField.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor,
                 constant: Constants.searchTextFieldInsets.top),
@@ -55,9 +60,8 @@ final class SearchViewController: UIViewController {
                 equalTo: view.safeAreaLayoutGuide.rightAnchor,
                 constant: Constants.searchTextFieldInsets.right),
             searchTextField.heightAnchor.constraint(
-                equalToConstant: Constants.heightOfSearchTextField)
-        ]
-        constrants += [
+                equalToConstant: Constants.heightOfSearchTextField),
+            
             suggestionTableView.topAnchor.constraint(
                 equalTo: searchTextField.bottomAnchor,
                 constant: Constants.searchTextFieldInsets.top),
@@ -73,7 +77,14 @@ final class SearchViewController: UIViewController {
         NSLayoutConstraint.activate(constrants)
     }
     
-    
+    @objc
+    private func searchTextFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text, text.count > 0 {
+            output?.textFieldDidChange(with: text)
+        } else {
+            output?.textFieldDidEmpty()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,6 +94,7 @@ final class SearchViewController: UIViewController {
         suggestionTableView.rowHeight = UITableView.automaticDimension
         suggestionTableView.estimatedRowHeight = 44
         setLayout()
+        output?.viewDidLoad()
     }
 }
 
@@ -100,14 +112,10 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         Settings.shared.cityFontHeight + 8
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        let vc = CardController()
-        vc.modalPresentationStyle = .fullScreen
-        self.present(
-            vc,
-            animated: true,
-            completion: nil)
+        self.output?.cellDidTapped(for: cities[indexPath.row])
     }
 }
 
@@ -119,3 +127,17 @@ private extension SearchViewController {
     }
 }
 
+extension SearchViewController: SearchViewInput {
+    func setCitites(_ cities: [City]) {
+        self.cities = cities
+        self.suggestionTableView.reloadData()
+    }
+
+}
+
+extension SearchViewController: SearchRouterOutput {
+    func pushCityController(for controller: UIViewController) {
+        modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
+    }
+}

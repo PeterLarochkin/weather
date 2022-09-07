@@ -22,7 +22,7 @@ final class ForecastViewController: UIViewController {
         return chartView
     }()
     
-    var currentForecast: [Forecast] = WeatherManager.shared.loadWeatherForecast("Hello", .day,  Date(),  Date())
+    var currentForecast: [Forecast] = []
 
     let changeButton: UIButton = {
         let button = UIButton()

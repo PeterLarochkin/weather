@@ -26,7 +26,7 @@ final class CardController: UIViewController {
         return collectionView
     }()
     
-    var forecasts: [Forecast] = WeatherManager.shared.loadWeatherForecast("Hello", .month, Date(),  Date())
+    var forecasts: [Forecast] = []
     private let kCellHeight: CGFloat = Settings.shared.longHeightOfCard
     
     func setLayout() {
@@ -60,7 +60,7 @@ extension CardController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell:CardCell = collectionView.dequeueReusableCell(withReuseIdentifier: "WalletCell", for: indexPath) as! CardCell
         
-        let dayForecast = WeatherManager.shared.loadWeatherForecast(currentCityId, .day,  Date(),  Date())
+        let dayForecast : [Forecast] = []
         
         let chartData = dayForecast.enumerated().map { index, forecast in
             ChartDataEntry(x: Double(index + 1), y: Double(forecast.temp))
@@ -85,14 +85,12 @@ extension CardController: UICollectionViewDelegate, UICollectionViewDelegateFlow
                     self.collectionView.performBatchUpdates {
                     } completion: { (comp) in
                         if let cell = collectionView.cellForItem(at: indexPath) as? CardCell {
-                            let dayForecast = WeatherManager.shared.loadWeatherForecast(self.currentCityId, .day,  Date(),  Date())
-
+                            let dayForecast: [Forecast] = []
                             let chartData = dayForecast.enumerated().map { index, forecast in
                                 BarChartDataEntry(x: Double(index+1), y: Double(forecast.temp))
                             }
                             cell.chartView.isHidden = false
                             cell.setData(chartData)
-                            
                         }
                         
                         

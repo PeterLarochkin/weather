@@ -21,6 +21,7 @@ extension SearchInteractor: SearchInteractorInput {
     }
     
     func cityDidChosed(for city: City) {
+        debugPrint("cityDidChosed")
         self.output?.openCityModule(for: city)
     }
 }

@@ -39,6 +39,7 @@ protocol SearchInteractorOutput: AnyObject {
 }
 
 protocol SearchRouterInput: AnyObject {
+    var output: SearchRouterOutput? { get set }
     func pushCityController(for city: City)
     
 }

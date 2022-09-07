@@ -115,6 +115,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
+        debugPrint("didSelectRowAt")
+        
         self.output?.cellDidTapped(for: cities[indexPath.row])
     }
 }
@@ -137,7 +139,9 @@ extension SearchViewController: SearchViewInput {
 
 extension SearchViewController: SearchRouterOutput {
     func pushCityController(for controller: UIViewController) {
-        modalPresentationStyle = .fullScreen
-        present(controller, animated: true, completion: nil)
+        debugPrint("pushCityController")
+        self.modalPresentationStyle = .overFullScreen
+        self.present(controller, animated: true, completion: nil)
+
     }
 }

@@ -14,7 +14,9 @@ final class SearchRouter {
 
 extension SearchRouter: SearchRouterInput {
     func pushCityController(for city: City) {
-        
+        debugPrint("pushCityController")
+        let vc = CardController()
+        self.output?.pushCityController(for: vc)
     }
     
 }

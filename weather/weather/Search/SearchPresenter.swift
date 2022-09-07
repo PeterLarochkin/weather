@@ -38,6 +38,7 @@ extension SearchPresenter: SearchViewOutput {
     }
     
     func cellDidTapped(for city: City) {
+        debugPrint("cellDidTapped")
         interactor.cityDidChosed(for: city)
     }
 
@@ -50,6 +51,7 @@ extension SearchPresenter: SearchInteractorOutput {
     
     
     func openCityModule(for city: City) {
+        debugPrint("openCityModule")
         self.router.pushCityController(for: city)
     }
     

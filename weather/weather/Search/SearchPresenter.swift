@@ -26,15 +26,15 @@ extension SearchPresenter: SearchModuleInput {
 
 extension SearchPresenter: SearchViewOutput {
     func viewDidLoad() {
-        interactor.suggestionViewDidLoaded()
+        interactor.setCachedCities()
     }
     
     func textFieldDidEmpty() {
-        
+        interactor.textFieldDidChange(with: "")
     }
     
     func textFieldDidChange(with text: String) {
-        
+        interactor.textFieldDidChange(with: text)
     }
     
     func cellDidTapped(for city: City) {
@@ -45,7 +45,7 @@ extension SearchPresenter: SearchViewOutput {
 }
 
 extension SearchPresenter: SearchInteractorOutput {
-    func setCacheHistory(for cities: [City]) {
+    func setCities(for cities: [City]) {
         self.view?.setCitites(cities)
     }
     

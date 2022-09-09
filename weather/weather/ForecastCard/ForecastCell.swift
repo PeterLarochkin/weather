@@ -8,7 +8,7 @@
 import UIKit
 import Charts
 
-final class CardCell: UICollectionViewCell {
+final class ForecastCell: UICollectionViewCell {
     let emojiStates: [String] = ["🌤", "⛅", "🌦", "🌧", "⛈", "🌩", "☁️" , "☀️", "🌨", "🧣"]
     var dateLabel: UILabel = {
         let label = UILabel()
@@ -163,7 +163,7 @@ final class CardCell: UICollectionViewCell {
     
 }
 
-extension CardCell:ChartViewDelegate {
+extension ForecastCell:ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         print(entry)
     }

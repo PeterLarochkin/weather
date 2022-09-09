@@ -16,9 +16,9 @@ protocol СacheManagerProtocol: AnyObject {
     var output: CacheManagerOutput? { get set }
 }
 
-final class СacheManager: СacheManagerProtocol {
+final class CacheManager: СacheManagerProtocol {
     
-    static let shared: СacheManagerProtocol = СacheManager()
+    static let shared: СacheManagerProtocol = CacheManager()
     weak var output: CacheManagerOutput?
     private init() { }
     

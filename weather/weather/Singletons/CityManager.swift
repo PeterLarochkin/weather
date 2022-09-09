@@ -23,7 +23,7 @@ protocol CityManagerProtocol: AnyObject {
 
 final class CityManager: CityManagerProtocol {
     func loadCitySuggestions(_ citySearchRequest: String) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             let cities : [City] = [
                 City(name: "Moscow", lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
                 City(name: "Moscow", lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
@@ -43,7 +43,8 @@ final class CityManager: CityManagerProtocol {
                 City(name: "Moscow", lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
                 City(name: "Moscow", lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
             ]
-            self.output?.citySuggestionsDidLoaded(for: cities)
+            let sliceCount = cities.count - citySearchRequest.count < 0 ? 0 : cities.count - citySearchRequest.count
+            self.output?.citySuggestionsDidLoaded(for: Array(cities[0..<sliceCount]))
         }
     }
     weak var output: CityManagerOutput?

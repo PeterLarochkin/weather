@@ -9,15 +9,22 @@
 import Foundation
 
 final class SearchInteractor {
-    
-    
 	weak var output: SearchInteractorOutput?
 }
 
 extension SearchInteractor: SearchInteractorInput {
-    func suggestionViewDidLoaded() {
-        СacheManager.shared.output = self
-        СacheManager.shared.loadHistorySearchFromMemory()
+    func textFieldDidChange(with text: String) {
+        if text.count == 0 {
+            self.setCachedCities()
+        } else {
+            CityManager.shared.output = self
+            CityManager.shared.loadCitySuggestions(text)
+        }
+    }
+    
+    func setCachedCities() {
+        CacheManager.shared.output = self
+        CacheManager.shared.loadHistorySearchFromMemory()
     }
     
     func cityDidChosed(for city: City) {
@@ -25,8 +32,15 @@ extension SearchInteractor: SearchInteractorInput {
         self.output?.openCityModule(for: city)
     }
 }
+
 extension SearchInteractor: CacheManagerOutput {
     func citiesFromCacheDidLoad(for cities: [City]) {
-        output?.setCacheHistory(for: cities)
+        self.output?.setCities(for: cities)
+    }
+}
+
+extension SearchInteractor: CityManagerOutput {
+    func citySuggestionsDidLoaded(for cities: [City]) {
+        self.output?.setCities(for: cities)
     }
 }

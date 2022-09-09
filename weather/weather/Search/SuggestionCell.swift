@@ -28,8 +28,7 @@ final class SuggestionCell: UITableViewCell {
             lastWeatherStatusLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4),
             lastWeatherStatusLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
             lastWeatherStatusLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
-            lastWeatherStatusLabel.widthAnchor.constraint(equalToConstant:
-                                                            Settings.shared.cityFontHeight),
+            lastWeatherStatusLabel.widthAnchor.constraint(equalToConstant: Settings.shared.cityFontHeight),
             cityLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8),
             cityLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: 4),
             cityLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),

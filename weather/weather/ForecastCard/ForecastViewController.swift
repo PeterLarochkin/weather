@@ -1,24 +1,38 @@
 //
-//  ViewController.swift
+//  ForecastViewController.swift
 //  weather
 //
-//  Created by Петр Ларочкин on 25.08.2022.
+//  Created by Петр Ларочкин on 07.09.2022.
+//  
 //
 
 import UIKit
 import Charts
-protocol HasIndexOfSelectedRow: AnyObject {
-    func indexOfSelectedRow()-> Int?
+protocol HasIndexOfSelectedRow {
+    func indexOfSelectedRow() -> Int?
 }
-final class CardController: UIViewController {
-    
+
+final class ForecastViewController: UIViewController {
+	private let output: ForecastViewOutput
+
+    init(output: ForecastViewOutput) {
+        self.output = output
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     var selectedRow: Int? = 0
     var currentCityId: String = "Hello"
     lazy var collectionView:  UICollectionView = {
         let collectionView = UICollectionView(frame: .null, collectionViewLayout: CardLayout())
         let layout = CardLayout()
         collectionView.collectionViewLayout = layout
-        collectionView.register(CardCell.self, forCellWithReuseIdentifier: "WalletCell")
+        collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: "ForecastCell")
         collectionView.delegate = self
         collectionView.dataSource = self
         layout.delegateIndexOfSelectedRow = self
@@ -26,7 +40,9 @@ final class CardController: UIViewController {
         return collectionView
     }()
     
-    var forecasts: [Forecast] = []
+    lazy var forecasts: [Forecast] = Array.init(
+        repeating: Forecast(date: Date(), airHumidity: 35, temp: 22, emojiState: "!"),
+        count: 22)
     private let kCellHeight: CGFloat = Settings.shared.longHeightOfCard
     
     func setLayout() {
@@ -53,27 +69,29 @@ final class CardController: UIViewController {
     }
 }
 
-extension CardController: UICollectionViewDataSource {
+
+
+
+
+extension ForecastViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return forecasts.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell:CardCell = collectionView.dequeueReusableCell(withReuseIdentifier: "WalletCell", for: indexPath) as! CardCell
+        let cell: ForecastCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastCell", for: indexPath) as! ForecastCell
         
-        let dayForecast : [Forecast] = []
-        
-        let chartData = dayForecast.enumerated().map { index, forecast in
-            ChartDataEntry(x: Double(index + 1), y: Double(forecast.temp))
-        }
-        cell.configureCell(
-            forecasts[indexPath.row],
-            chartData,
-            (indexPath.row == selectedRow) || (indexPath.row == forecasts.count - 1))
+//        let dayForecast: [Forecast] = [Forecast(date: Date(), airHumidity: 22, temp: 22, emojiState: "!")]
+//
+//        let chartData: [ChartDataEntry] = []
+//        cell.configureCell(
+//            forecasts[indexPath.row],
+//            chartData,
+//            (indexPath.row == selectedRow) || (indexPath.row == forecasts.count - 1))
         return cell
     }
 }
 
-extension CardController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension ForecastViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
             if forecasts.count - 1 == indexPath.row {
                 //Last Card tap
@@ -84,16 +102,12 @@ extension CardController: UICollectionViewDelegate, UICollectionViewDelegateFlow
                     selectedRow = indexPath.row
                     self.collectionView.performBatchUpdates {
                     } completion: { (comp) in
-                        if let cell = collectionView.cellForItem(at: indexPath) as? CardCell {
+                        if let cell = collectionView.cellForItem(at: indexPath) as? ForecastCell {
                             let dayForecast: [Forecast] = []
-                            let chartData = dayForecast.enumerated().map { index, forecast in
-                                BarChartDataEntry(x: Double(index+1), y: Double(forecast.temp))
-                            }
+                            let chartData : [BarChartDataEntry] = [BarChartDataEntry(x: 30.0, y: 20.0)]
                             cell.chartView.isHidden = false
                             cell.setData(chartData)
                         }
-                        
-                        
                     }
                 }
             }
@@ -104,8 +118,11 @@ extension CardController: UICollectionViewDelegate, UICollectionViewDelegateFlow
     }
 }
 
-extension CardController: HasIndexOfSelectedRow {
+extension ForecastViewController: HasIndexOfSelectedRow {
     func indexOfSelectedRow() -> Int? {
         return selectedRow
     }
+}
+
+extension ForecastViewController: ForecastViewInput {
 }

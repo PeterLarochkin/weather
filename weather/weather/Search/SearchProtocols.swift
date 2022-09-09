@@ -25,17 +25,17 @@ protocol SearchViewOutput: AnyObject {
     func textFieldDidEmpty()
     func cellDidTapped(for city: City)
     func viewDidLoad()
-    
 }
 
 protocol SearchInteractorInput: AnyObject {
     func cityDidChosed(for city: City)
-    func suggestionViewDidLoaded()
+    func setCachedCities()
+    func textFieldDidChange(with text: String)
 }
 
 protocol SearchInteractorOutput: AnyObject {
     func openCityModule(for city: City)
-    func setCacheHistory(for cities: [City])
+    func setCities(for cities: [City])
 }
 
 protocol SearchRouterInput: AnyObject {

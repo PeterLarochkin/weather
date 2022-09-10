@@ -33,8 +33,7 @@ final class ForecastCell: UICollectionViewCell {
         chartView.delegate = self
         chartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.backgroundColor = .clear
-        chartView.isHidden = false
-        chartView.alpha = 1
+        chartView.alpha = 0
         chartView.layer.cornerRadius = 10
         chartView.clipsToBounds = true
         chartView.rightAxis.enabled = false
@@ -85,8 +84,6 @@ final class ForecastCell: UICollectionViewCell {
         UIView.animate(withDuration: 0.2, animations: {
             self.chartView.alpha = 1
         })
-        
-
     }
     
     func setLayout() {
@@ -130,18 +127,12 @@ final class ForecastCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configureCell(_ forecast: Forecast,_ data: [ChartDataEntry], _ isVisible: Bool){
+    func configureCell(_ forecast: Forecast,_ data: [ChartDataEntry]?){
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM"
         
         self.dateLabel.text = formatter.string(from: forecast.date)
         self.tempLabel.text = "\(forecast.temp)°C " + emojiStates.randomElement()!
-        if isVisible {
-            self.chartView.isHidden = false
-            setData(data)
-        } else {
-            self.chartView.isHidden = true
-        }
     }
     
     override init(frame: CGRect) {

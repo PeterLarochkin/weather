@@ -12,5 +12,19 @@ final class ForecastInteractor {
 	weak var output: ForecastInteractorOutput?
 }
 
-extension ForecastInteractor: ForecastInteractorInput {
+extension ForecastInteractor: ForecastInteractorInput {    
+    func needDataTempForExactDay(for date: Date, in city: City) {
+        WeatherManager.shared.output? = self
+        WeatherManager.shared.loadWeatherForecast(city, .day, date)
+    }
+    
+    func viewDidLoad(for city: City) {
+        WeatherManager.shared.output? = self
+        WeatherManager.shared.loadWeatherForecast(city, .month, Date())
+    }
+}
+extension ForecastInteractor: WeatherManagerOutput {
+    func weatherDidLoaded(for forecast: [Forecast], for period: Period) {
+        output?.weatherDidLoaded(for: forecast, for: period)
+    }
 }

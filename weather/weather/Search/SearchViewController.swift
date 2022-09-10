@@ -79,10 +79,8 @@ final class SearchViewController: UIViewController {
     
     @objc
     private func searchTextFieldDidChange(_ textField: UITextField) {
-        if let text = textField.text, text.count > 0 {
+        if let text = textField.text{
             output?.textFieldDidChange(with: text)
-        } else {
-            output?.textFieldDidEmpty()
         }
     }
     
@@ -129,6 +127,14 @@ private extension SearchViewController {
 }
 
 extension SearchViewController: SearchViewInput {
+    func isTextFieldEmpty() -> Bool {
+        if let isEmpty = searchTextField.text?.isEmpty {
+            return isEmpty
+        } else {
+            return true
+        }
+    }
+    
     func setCitites(_ cities: [City]) {
         self.cities = cities
         self.suggestionTableView.reloadData()

@@ -8,16 +8,12 @@
 import Foundation
 
 protocol WeatherManagerOutput: AnyObject {
-    
-    func weatherDidLoaded(for forecast: [Forecast])
+    func weatherDidLoaded(for forecast: [Forecast], for period: Period)
 }
 
-
-
-
-protocol WeatherManagerProtocol {
+protocol WeatherManagerProtocol: AnyObject {
     var output: WeatherManagerOutput? { get set }
-    func loadWeatherForecast(_ city: String, _ period: Period, _ discoveredDay: Date, _ completion: (_ cities: [Forecast]) -> ())
+    func loadWeatherForecast(_ city: City, _ period: Period, _ discoveredDay: Date) -> ()
 }
 
 struct Forecast {
@@ -41,10 +37,9 @@ final class WeatherManager {
 
 extension WeatherManager: WeatherManagerProtocol {
     func loadWeatherForecast(
-            _ city: String,
+            _ city: City,
             _ period: Period,
-            _ discoveredTime: Date,
-            _ completion: ([Forecast]) -> ()) {
+            _ discoveredTime: Date) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             switch period {
             case .day:
@@ -56,7 +51,7 @@ extension WeatherManager: WeatherManagerProtocol {
                         emojiState: self.emojiStates.randomElement()!)
                 }
                 
-                self.output?.weatherDidLoaded(for: forecasts)
+                self.output?.weatherDidLoaded(for: forecasts, for: period)
             case .month:
                 let forecasts = Array(1...30).map { item in
                     Forecast(
@@ -65,7 +60,7 @@ extension WeatherManager: WeatherManagerProtocol {
                         temp: Array(1..<38).randomElement()!,
                         emojiState: self.emojiStates.randomElement()!)
                 }
-                self.output?.weatherDidLoaded(for: forecasts)
+                self.output?.weatherDidLoaded(for: forecasts, for: period)
             }
         }
     }

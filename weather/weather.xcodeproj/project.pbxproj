@@ -84,11 +84,11 @@
 			children = (
 				2AB12AB328B72C3500697743 /* ForecastCell.swift */,
 				2AB12AAF28B72AD100697743 /* ForecastLayout.swift */,
-				2AE3DCB228C909F60041E16D /* ForecastPresenter.swift */,
-				2AE3DCB328C909F60041E16D /* ForecastRouter.swift */,
 				2AE3DCB428C909F60041E16D /* ForecastViewController.swift */,
-				2AE3DCB528C909F60041E16D /* ForecastProtocols.swift */,
+				2AE3DCB228C909F60041E16D /* ForecastPresenter.swift */,
 				2AE3DCB628C909F60041E16D /* ForecastInteractor.swift */,
+				2AE3DCB528C909F60041E16D /* ForecastProtocols.swift */,
+				2AE3DCB328C909F60041E16D /* ForecastRouter.swift */,
 				2AE3DCB728C909F60041E16D /* ForecastContainer.swift */,
 			);
 			path = ForecastCard;

@@ -15,7 +15,7 @@ final class SearchRouter {
 extension SearchRouter: SearchRouterInput {
     func pushCityController(for city: City) {
         debugPrint("pushCityController")
-        let container = ForecastContainer.assemble(with: ForecastContext(moduleOutput: nil))
+        let container = ForecastContainer.assemble(with: ForecastContext(moduleOutput: nil), city: city)
         let vc = container.viewController // initial
         self.output?.pushCityController(for: vc)
     }

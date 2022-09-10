@@ -41,6 +41,15 @@ extension SearchInteractor: CacheManagerOutput {
 
 extension SearchInteractor: CityManagerOutput {
     func citySuggestionsDidLoaded(for cities: [City]) {
-        self.output?.setCities(for: cities)
+        guard let isTextFieldEmpty = output?.isTextFieldEmpty() else {
+            setCachedCities()
+            return
+        }
+        if isTextFieldEmpty {
+            setCachedCities()
+        } else {
+            self.output?.setCities(for: cities)
+        }
+        
     }
 }

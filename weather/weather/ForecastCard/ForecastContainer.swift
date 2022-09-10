@@ -13,7 +13,7 @@ final class ForecastContainer {
 	let viewController: UIViewController
 	private(set) weak var router: ForecastRouterInput!
 
-	class func assemble(with context: ForecastContext) -> ForecastContainer {
+    class func assemble(with context: ForecastContext, city: City) -> ForecastContainer {
         let router = ForecastRouter()
         let interactor = ForecastInteractor()
         let presenter = ForecastPresenter(router: router, interactor: interactor)
@@ -21,6 +21,7 @@ final class ForecastContainer {
 
 		presenter.view = viewController
 		presenter.moduleOutput = context.moduleOutput
+        presenter.city = city
 
 		interactor.output = presenter
 

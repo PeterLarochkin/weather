@@ -18,11 +18,11 @@ protocol SearchModuleOutput: AnyObject {
 
 protocol SearchViewInput: AnyObject {
     func setCitites(_ cities: [City])
+    func isTextFieldEmpty()-> Bool
 }
 
 protocol SearchViewOutput: AnyObject {
     func textFieldDidChange(with text: String)
-    func textFieldDidEmpty()
     func cellDidTapped(for city: City)
     func viewDidLoad()
 }
@@ -36,6 +36,7 @@ protocol SearchInteractorInput: AnyObject {
 protocol SearchInteractorOutput: AnyObject {
     func openCityModule(for city: City)
     func setCities(for cities: [City])
+    func isTextFieldEmpty()-> Bool
 }
 
 protocol SearchRouterInput: AnyObject {

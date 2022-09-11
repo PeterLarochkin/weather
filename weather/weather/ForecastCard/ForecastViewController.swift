@@ -15,7 +15,7 @@ protocol HasIndexOfSelectedRow {
 final class ForecastViewController: UIViewController {
 	private let output: ForecastViewOutput
     
-    private var selectedRow: Int? = 0
+    private var selectedRow: Int?
     private var forecasts: [Forecast]?
     private var dataForOpenedCell: [IndexPath:[ChartDataEntry]?] = [IndexPath:[ChartDataEntry]?]()
     
@@ -33,6 +33,7 @@ final class ForecastViewController: UIViewController {
         let collectionView = UICollectionView(frame: .null, collectionViewLayout: CardLayout())
         let layout = CardLayout()
         collectionView.collectionViewLayout = layout
+        collectionView.backgroundColor = .systemGray4
         collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: "ForecastCell")
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -140,8 +141,8 @@ extension ForecastViewController: ForecastViewInput {
     
     func setDataForCell(for data: [BarChartDataEntry], to indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? ForecastCell {
+            debugPrint("setDataForCell")
             let chartData: [BarChartDataEntry] = data
-            cell.chartView.isHidden = false
             cell.setData(chartData)
             dataForOpenedCell[indexPath] = chartData
         }

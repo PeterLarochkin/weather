@@ -35,33 +35,37 @@ final class WeatherManager {
     private init() {}
 }
 
+
 extension WeatherManager: WeatherManagerProtocol {
-    func loadWeatherForecast(
-            _ city: City,
-            _ period: Period,
-            _ discoveredTime: Date) {
+    func loadWeatherForecast( _ city: City, _ period: Period, _ discoveredTime: Date) {
+        
+        
+        guard let discoveredTime = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: discoveredTime) else { return }
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            switch period {
-            case .day:
-                let forecasts = Array(1...24).map { item in
-                    Forecast(
-                        date: Date(),
-                        airHumidity: Array(55..<95).randomElement()!,
-                        temp: Array(1..<38).randomElement()!,
-                        emojiState: self.emojiStates.randomElement()!)
+            
+            let len = { () -> Int in
+                switch period {
+                case .day:
+                    debugPrint("loadWeatherForecastDay")
+                    return 24
+                case .month:
+                    debugPrint("loadWeatherForecastMonth")
+                    return 31
                 }
-                
-                self.output?.weatherDidLoaded(for: forecasts, for: period)
-            case .month:
-                let forecasts = Array(1...30).map { item in
-                    Forecast(
-                        date: Date(),
-                        airHumidity: Array(55..<95).randomElement()!,
-                        temp: Array(1..<38).randomElement()!,
-                        emojiState: self.emojiStates.randomElement()!)
+            }()
+            
+            let forecasts = Array(1...len).compactMap { item -> Forecast? in
+                guard let date = Calendar.current.date(byAdding: .hour, value: item, to: discoveredTime) else {
+                    return nil
                 }
-                self.output?.weatherDidLoaded(for: forecasts, for: period)
+                return Forecast(
+                    date: date,
+                    airHumidity: Array(55..<95).randomElement()!,
+                    temp: Array(1..<38).randomElement()!,
+                    emojiState: self.emojiStates.randomElement()!)
             }
+            self.output?.weatherDidLoaded(for: forecasts, for: period)
         }
     }
 }

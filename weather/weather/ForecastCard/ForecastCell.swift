@@ -33,7 +33,7 @@ final class ForecastCell: UICollectionViewCell {
         chartView.delegate = self
         chartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.backgroundColor = .clear
-        chartView.alpha = 0
+//        chartView.alpha = 0
         chartView.layer.cornerRadius = 10
         chartView.clipsToBounds = true
         chartView.rightAxis.enabled = false
@@ -76,14 +76,17 @@ final class ForecastCell: UICollectionViewCell {
         lineSet.valueFont = .boldSystemFont(ofSize: Settings.shared.dateFontHeight)
         lineSet.drawCirclesEnabled = false
         lineSet.valueFormatter = DefaultValueFormatter(decimals: 0)
+        lineSet.visible = true
         let chartData = LineChartData(dataSet: lineSet)
         chartData.setDrawValues(true)
+        
         chartData.setValueTextColor(.black)
-        chartView.alpha = 0
+//        chartView.alpha = 0
         self.chartView.data = chartData
-        UIView.animate(withDuration: 0.2, animations: {
-            self.chartView.alpha = 1
-        })
+        
+//        UIView.animate(withDuration: 0.2, animations: {
+//            self.chartView.alpha = 1
+//        })
     }
     
     func setLayout() {
@@ -137,7 +140,7 @@ final class ForecastCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = .systemGray
         layer.cornerRadius = 10
         addViews()
         setLayout()

@@ -14,17 +14,20 @@ final class ForecastInteractor {
 
 extension ForecastInteractor: ForecastInteractorInput {    
     func needDataTempForExactDay(for date: Date, in city: City) {
-        WeatherManager.shared.output? = self
+        debugPrint("needDataTempForExactDay")
+        WeatherManager.shared.output = self
         WeatherManager.shared.loadWeatherForecast(city, .day, date)
     }
     
     func viewDidLoad(for city: City) {
-        WeatherManager.shared.output? = self
+        debugPrint("viewDidLoad")
+        WeatherManager.shared.output = self
         WeatherManager.shared.loadWeatherForecast(city, .month, Date())
     }
 }
 extension ForecastInteractor: WeatherManagerOutput {
     func weatherDidLoaded(for forecast: [Forecast], for period: Period) {
+        debugPrint("weatherDidLoaded")
         output?.weatherDidLoaded(for: forecast, for: period)
     }
 }

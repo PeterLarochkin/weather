@@ -9,7 +9,6 @@ import UIKit
 import Charts
 
 final class ForecastCell: UICollectionViewCell {
-    let emojiStates: [String] = ["🌤", "⛅", "🌦", "🌧", "⛈", "🌩", "☁️" , "☀️", "🌨", "🧣"]
     var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +32,6 @@ final class ForecastCell: UICollectionViewCell {
         chartView.delegate = self
         chartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.backgroundColor = .clear
-//        chartView.alpha = 0
         chartView.layer.cornerRadius = 10
         chartView.clipsToBounds = true
         chartView.rightAxis.enabled = false
@@ -58,7 +56,7 @@ final class ForecastCell: UICollectionViewCell {
         chartView.extraBottomOffset = chartView.xAxis.labelFont.xHeight
         chartView.moveViewToX(3)
         chartView.xAxis.axisLineColor = .clear
-//        chartView.animate(yAxisDuration: 0.2)
+
         return chartView
     }()
     
@@ -79,14 +77,13 @@ final class ForecastCell: UICollectionViewCell {
         lineSet.visible = true
         let chartData = LineChartData(dataSet: lineSet)
         chartData.setDrawValues(true)
-        
         chartData.setValueTextColor(.black)
-//        chartView.alpha = 0
         self.chartView.data = chartData
-        
-//        UIView.animate(withDuration: 0.2, animations: {
-//            self.chartView.alpha = 1
-//        })
+        if chartView.alpha == 0 {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.chartView.alpha = 1
+            })
+        }
     }
     
     func setLayout() {
@@ -130,18 +127,24 @@ final class ForecastCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configureCell(_ forecast: Forecast,_ data: [ChartDataEntry]?){
+    func configureCell(_ forecast: Forecast,_ data: [BarChartDataEntry]?){
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM"
         
         self.dateLabel.text = formatter.string(from: forecast.date)
-        self.tempLabel.text = "\(forecast.temp)°C " + emojiStates.randomElement()!
+        self.tempLabel.text = "\(forecast.temp)°C " + forecast.emojiState
+        if let data = data {
+            self.setData(data)
+            setData(data)
+        }
+        
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemGray
+        self.backgroundColor = .white
         layer.cornerRadius = 10
+        chartView.alpha = 0
         addViews()
         setLayout()
     }

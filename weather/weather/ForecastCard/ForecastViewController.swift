@@ -17,7 +17,7 @@ final class ForecastViewController: UIViewController {
     
     private var selectedRow: Int?
     private var forecasts: [Forecast]?
-    private var dataForOpenedCell: [IndexPath:[ChartDataEntry]?] = [IndexPath:[ChartDataEntry]?]()
+    private var dataForOpenedCell: [IndexPath:[BarChartDataEntry]] = [IndexPath:[BarChartDataEntry]]()
     
     init(output: ForecastViewOutput) {
         self.output = output
@@ -33,7 +33,7 @@ final class ForecastViewController: UIViewController {
         let collectionView = UICollectionView(frame: .null, collectionViewLayout: CardLayout())
         let layout = CardLayout()
         collectionView.collectionViewLayout = layout
-        collectionView.backgroundColor = .systemGray4
+        collectionView.backgroundColor = .white
         collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: "ForecastCell")
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -68,8 +68,6 @@ final class ForecastViewController: UIViewController {
         view.addSubview(collectionView)
         setLayout()
         output.viewDidLoad()
-        
-        
     }
 }
 
@@ -89,14 +87,14 @@ extension ForecastViewController: UICollectionViewDataSource {
         }
         
         if let forecasts = self.forecasts {
-            if (selectedRow == indexPath.row) || (forecasts.count - 1 == indexPath.row){
-                if let data = dataForOpenedCell[indexPath] {
-                    cell.configureCell(forecasts[indexPath.row], data)
+            if (selectedRow == indexPath.item) || (forecasts.count - 1 == indexPath.item){
+                if let data = dataForOpenedCell[indexPath]  {
+                    cell.configureCell(forecasts[indexPath.item], data)
                 } else {
                     output.needDataForCell(at: indexPath)
                 }
             } else {
-                cell.configureCell(forecasts[indexPath.row], nil)
+                cell.configureCell(forecasts[indexPath.item], nil)
             }
         }
         return cell
@@ -106,16 +104,21 @@ extension ForecastViewController: UICollectionViewDataSource {
 extension ForecastViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let forecasts = self.forecasts {
-            if forecasts.count - 1 == indexPath.row {
+            if forecasts.count - 1 == indexPath.item {
                 //Last Card tap
             } else {
                 if selectedRow == indexPath.item {
                     //Expanded card to redirection
                 } else {
-                    selectedRow = indexPath.row
+                    selectedRow = indexPath.item
                     self.collectionView.performBatchUpdates {
                     } completion: { (comp) in
-                        
+                        if let data = self.dataForOpenedCell[indexPath],
+                           let cell = collectionView.cellForItem(at: indexPath) as? ForecastCell{
+                            cell.configureCell(forecasts[indexPath.item], data)
+                        } else {
+                            self.output.needDataForCell(at: indexPath)
+                        }
                     }
                 }
             }
@@ -140,11 +143,11 @@ extension ForecastViewController: ForecastViewInput {
     }
     
     func setDataForCell(for data: [BarChartDataEntry], to indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? ForecastCell {
+        if  let cell = collectionView.cellForItem(at: indexPath) as? ForecastCell,
+            let forecasts = forecasts {
             debugPrint("setDataForCell")
-            let chartData: [BarChartDataEntry] = data
-            cell.setData(chartData)
-            dataForOpenedCell[indexPath] = chartData
+            dataForOpenedCell[indexPath] = data
+            cell.configureCell(forecasts[indexPath.item], data)
         }
     }
 }

@@ -12,12 +12,15 @@ final class SuggestionCell: UITableViewCell {
     var cityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .boldSystemFont(ofSize: Settings.shared.cityFontHeight)
+//        label.font = .boldSystemFont(ofSize: Settings.shared.cityFontHeight)/
+        
+        label.font = .systemFont(ofSize: Settings.shared.cityFontHeight, weight: .semibold)
         return label
     }()
     
     var lastWeatherStatusLabel: UILabel = {
         let label = UILabel()
+        
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .boldSystemFont(ofSize: Settings.shared.cityFontHeight)
         return label

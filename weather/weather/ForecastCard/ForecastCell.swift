@@ -17,10 +17,6 @@ final class ForecastCell: UICollectionViewCell {
         view.backgroundColor = .systemGray6
         view.layer.cornerRadius = 5
         view.translatesAutoresizingMaskIntoConstraints = false
-//        var transform = CATransform3DIdentity
-//        transform.m34 = -1 / 500
-//        let angle = CGFloat(-10 * Double.pi / 180.0)
-//        view.transform3D = CATransform3DRotate(transform, angle, 1, 0, 0)
         return view
     }()
     var dateLabel: UILabel = {
@@ -96,16 +92,8 @@ final class ForecastCell: UICollectionViewCell {
         if chartView.alpha == 0 {
 //            DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-                    var transform = CATransform3DIdentity
-                    transform.m34 = -1 / 500
-                    let angle = CGFloat(0 * Double.pi / 180.0)
-                    self.containerView.transform3D = CATransform3DRotate(transform, angle, 1, 0, 0)
-//                    self.containerView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
                     self.chartView.alpha = 1
-                }, completion: {_ in
-                    
-                })
-                
+                }, completion: nil)
 //            }
         }
     }
@@ -182,9 +170,7 @@ final class ForecastCell: UICollectionViewCell {
         } else {
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
                 self.chartView.alpha = 0
-            }, completion: {_ in
-                
-            })
+            }, completion: nil)
         }
         
     }

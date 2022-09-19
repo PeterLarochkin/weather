@@ -49,8 +49,7 @@ protocol CityManagerProtocol: AnyObject {
 final class CityManager: CityManagerProtocol {
     func loadCitySuggestions(_ citySearchRequest: String) {
         let language = Locale.preferredLanguages[0].split(separator: "-").first
-//        debugPrint("https://api.maptiler.com/geocoding/\(citySearchRequest).json?key=\(String(describing: apiKey!))&language=\(language)")
-        let link = "https://api.maptiler.com/geocoding/\(citySearchRequest).json?key=\(String(describing: apiKey!))&language=\(language!)"
+        let link = "https://api.maptiler.com/geocoding/\(citySearchRequest).json?key=\(String(describing: apiKey!))&language=\(language)"
         debugPrint(link)
         if let urlString = link.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
            let url = URL(string: urlString) {

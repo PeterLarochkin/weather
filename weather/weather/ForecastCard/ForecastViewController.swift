@@ -11,11 +11,13 @@ import Charts
 protocol HasIndexOfSelectedRow {
     func indexOfSelectedRow() -> Int?
 }
-
+struct HelloWorld: Codable {
+    let stringsss: String
+}
 final class ForecastViewController: UIViewController {
 	private let output: ForecastViewOutput
     
-    private var selectedRow: Int?
+    private var selectedRow: Int? = 0
     private var forecasts: [Forecast]?
     private var dataForOpenedCell: [IndexPath:[BarChartDataEntry]] = [IndexPath:[BarChartDataEntry]]()
     
@@ -67,6 +69,7 @@ final class ForecastViewController: UIViewController {
         self.view.backgroundColor = .white
         view.addSubview(collectionView)
         setLayout()
+        
         output.viewDidLoad()
     }
 }

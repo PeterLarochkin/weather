@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 class Settings {
-    var cityFontHeight: CGFloat = 45
-    var dateFontHeight: CGFloat = UIFont.preferredFont(forTextStyle: .largeTitle).xHeight
+    var cityFontHeight: CGFloat = 24
+    var dateFontHeight: CGFloat = 18
     var shortHeightOfCard: CGFloat = 50
     var longHeightOfCard: CGFloat = 250
-    var standartOffSets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: -4, right: -4)
+    var standartOffSets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: -8, right: -8)
     
     static let shared: Settings = Settings()
     private init() {}

@@ -49,7 +49,9 @@ extension SearchPresenter: SearchInteractorOutput {
     }
     
     func setCities(for cities: [City]) {
-        self.view?.setCitites(cities)
+        DispatchQueue.main.async {
+            self.view?.setCitites(cities)
+        }
     }
     
     

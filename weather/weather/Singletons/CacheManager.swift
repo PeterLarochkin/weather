@@ -25,40 +25,7 @@ final class CacheManager: СacheManagerProtocol {
     func loadHistorySearchFromMemory() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1)  {
             let cities : [City] = [
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
-                City(name: ["Novosibirsk", "Neryungri", "Smolenskoe"].randomElement()!,
-                     lastWeather: ["⚡", "☀️", "🌧️"].randomElement()!),
+                City(name: "Moscow", center: (0.0, 0.0))
             ]
             self.output?.citiesFromCacheDidLoad(for: cities)
         }

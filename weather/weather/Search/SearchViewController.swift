@@ -43,6 +43,7 @@ final class SearchViewController: UIViewController {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(SuggestionCell.self, forCellReuseIdentifier: "SuggestionCell")
+        tableView.separatorStyle = .singleLine
         tableView.delegate = self
         tableView.dataSource = self
         return tableView
@@ -108,7 +109,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        Settings.shared.cityFontHeight + 8
+        -1
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -120,7 +121,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension SearchViewController {
     struct Constants {
-        static let heightOfSearchFont: CGFloat = 48
+        static let heightOfSearchFont: CGFloat = 40
         static let heightOfSearchTextField: CGFloat = 50
         static let searchTextFieldInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: -16, right: -16)
     }
@@ -128,16 +129,21 @@ private extension SearchViewController {
 
 extension SearchViewController: SearchViewInput {
     func isTextFieldEmpty() -> Bool {
-        if let isEmpty = searchTextField.text?.isEmpty {
-            return isEmpty
-        } else {
-            return true
-        }
+        
+            if let isEmpty = searchTextField.text?.isEmpty {
+                return isEmpty
+            } else {
+                return true
+            }
+        
+        
     }
     
     func setCitites(_ cities: [City]) {
         self.cities = cities
+
         self.suggestionTableView.reloadData()
+        
     }
 
 }

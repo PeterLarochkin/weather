@@ -9,6 +9,20 @@ import UIKit
 import Charts
 
 final class ForecastCell: UICollectionViewCell {
+    
+    let containerView: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 2
+        view.layer.borderColor = UIColor.systemGray.cgColor
+        view.backgroundColor = .systemGray6
+        view.layer.cornerRadius = 5
+        view.translatesAutoresizingMaskIntoConstraints = false
+//        var transform = CATransform3DIdentity
+//        transform.m34 = -1 / 500
+//        let angle = CGFloat(-10 * Double.pi / 180.0)
+//        view.transform3D = CATransform3DRotate(transform, angle, 1, 0, 0)
+        return view
+    }()
     var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -80,31 +94,54 @@ final class ForecastCell: UICollectionViewCell {
         chartData.setValueTextColor(.black)
         self.chartView.data = chartData
         if chartView.alpha == 0 {
-            UIView.animate(withDuration: 0.2, animations: {
-                self.chartView.alpha = 1
-            })
+//            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+                    var transform = CATransform3DIdentity
+                    transform.m34 = -1 / 500
+                    let angle = CGFloat(0 * Double.pi / 180.0)
+                    self.containerView.transform3D = CATransform3DRotate(transform, angle, 1, 0, 0)
+//                    self.containerView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                    self.chartView.alpha = 1
+                }, completion: {_ in
+                    
+                })
+                
+//            }
         }
     }
     
     func setLayout() {
         let constraints = [
-            dateLabel.leftAnchor.constraint(
-                equalTo: self.leftAnchor,
-                constant: Settings.shared.standartOffSets.left),
-            dateLabel.topAnchor.constraint(
+            containerView.topAnchor.constraint(
                 equalTo: self.topAnchor,
                 constant: Settings.shared.standartOffSets.top),
+            containerView.leftAnchor.constraint(
+                equalTo: self.leftAnchor,
+                constant: Settings.shared.standartOffSets.left),
+            containerView.rightAnchor.constraint(
+                equalTo: self.rightAnchor,
+                constant: Settings.shared.standartOffSets.right),
+            containerView.bottomAnchor.constraint(
+                equalTo: self.bottomAnchor,
+                constant: Settings.shared.standartOffSets.bottom),
+            
+            dateLabel.leftAnchor.constraint(
+                equalTo: containerView.leftAnchor,
+                constant: Settings.shared.standartOffSets.left),
+            dateLabel.topAnchor.constraint(
+                equalTo: containerView.topAnchor,
+                constant: Settings.shared.standartOffSets.top),
             dateLabel.rightAnchor.constraint(
-                equalTo: self.centerXAnchor),
+                equalTo: containerView.centerXAnchor),
             dateLabel.heightAnchor.constraint(
                 equalToConstant:
                     Settings.shared.dateFontHeight + 2 * Settings.shared.standartOffSets.top),
             
             tempLabel.rightAnchor.constraint(
-                equalTo: self.rightAnchor,
+                equalTo: containerView.rightAnchor,
                 constant: Settings.shared.standartOffSets.right),
             tempLabel.topAnchor.constraint(
-                equalTo: self.topAnchor,
+                equalTo: containerView.topAnchor,
                 constant: Settings.shared.standartOffSets.top),
             tempLabel.leftAnchor.constraint(
                 equalTo: dateLabel.rightAnchor),
@@ -112,19 +149,22 @@ final class ForecastCell: UICollectionViewCell {
                 equalTo: dateLabel.heightAnchor),
             
             chartView.topAnchor.constraint(
-                equalTo: self.topAnchor,
+                equalTo: containerView.topAnchor,
                 constant: Settings.shared.shortHeightOfCard),
             chartView.leftAnchor.constraint(
-                equalTo: self.leftAnchor,
+                equalTo: containerView.leftAnchor,
                 constant: Settings.shared.standartOffSets.left),
             chartView.rightAnchor.constraint(
-                equalTo: self.rightAnchor,
+                equalTo: containerView.rightAnchor,
                 constant: Settings.shared.standartOffSets.right),
             chartView.bottomAnchor.constraint(
-                equalTo: self.bottomAnchor,
+                equalTo: containerView.bottomAnchor,
                 constant: Settings.shared.standartOffSets.bottom)
         ]
         NSLayoutConstraint.activate(constraints)
+        
+        
+        
     }
     
     func configureCell(_ forecast: Forecast,_ data: [BarChartDataEntry]?){
@@ -133,25 +173,37 @@ final class ForecastCell: UICollectionViewCell {
         
         self.dateLabel.text = formatter.string(from: forecast.date)
         self.tempLabel.text = "\(forecast.temp)°C " + forecast.emojiState
+        
         if let data = data {
+            
+            
             self.setData(data)
             setData(data)
+        } else {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+                self.chartView.alpha = 0
+            }, completion: {_ in
+                
+            })
         }
         
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
-        layer.cornerRadius = 10
+        self.backgroundColor = .clear
+        
         chartView.alpha = 0
         addViews()
         setLayout()
+
+        
     }
     func addViews() {
-        self.addSubview(dateLabel)
-        self.addSubview(tempLabel)
-        self.addSubview(chartView)
+        containerView.addSubview(dateLabel)
+        containerView.addSubview(tempLabel)
+        containerView.addSubview(chartView)
+        self.addSubview(containerView)
     }
     
     required init?(coder aDecoder: NSCoder) {

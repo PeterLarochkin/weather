@@ -13,8 +13,8 @@ final class SuggestionCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
 //        label.font = .boldSystemFont(ofSize: Settings.shared.cityFontHeight)/
-        
-        label.font = .systemFont(ofSize: Settings.shared.cityFontHeight, weight: .semibold)
+        label.numberOfLines = -1
+        label.font = .systemFont(ofSize: Settings.shared.cityFontHeight, weight: .bold)
         return label
     }()
     
@@ -28,14 +28,14 @@ final class SuggestionCell: UITableViewCell {
 
     private func layoutLabels(){
         NSLayoutConstraint.activate([
-            lastWeatherStatusLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4),
-            lastWeatherStatusLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
-            lastWeatherStatusLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
-            lastWeatherStatusLabel.widthAnchor.constraint(equalToConstant: Settings.shared.cityFontHeight),
-            cityLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8),
-            cityLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: 4),
-            cityLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
-            cityLabel.rightAnchor.constraint(equalTo: lastWeatherStatusLabel.leftAnchor)
+//            lastWeatherStatusLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4),
+//            lastWeatherStatusLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
+//            lastWeatherStatusLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
+//            lastWeatherStatusLabel.widthAnchor.constraint(equalToConstant: Settings.shared.cityFontHeight),
+            cityLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: Settings.shared.standartOffSets.left),
+            cityLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: Settings.shared.standartOffSets.bottom),
+            cityLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: Settings.shared.standartOffSets.top),
+            cityLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: Settings.shared.standartOffSets.right),
         ])
     }
     
@@ -43,13 +43,13 @@ final class SuggestionCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .white
         self.addSubview(cityLabel)
-        self.addSubview(lastWeatherStatusLabel)
+//        self.addSubview(lastWeatherStatusLabel)
         layoutLabels()
     }
     
     func configureCell(_ city: City){
-        self.cityLabel.text = city.name
-        self.lastWeatherStatusLabel.text = city.lastWeather
+        self.cityLabel.text = city.name + " \(city.center.0), \(city.center.1)"
+        self.lastWeatherStatusLabel.text = ""
     }
     
     required init?(coder aDecoder: NSCoder) {

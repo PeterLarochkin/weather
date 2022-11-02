@@ -27,8 +27,8 @@ extension SearchInteractor: SearchInteractorInput {
         CacheManager.shared.loadHistorySearchFromMemory()
     }
     
-    func cityDidChosed(for city: City) {
-        debugPrint("cityDidChosed")
+    func cityDidSelect(for city: City) {
+        debugPrint("cityDidSelect")
         self.output?.openCityModule(for: city)
     }
 }

@@ -141,16 +141,22 @@ extension ForecastViewController: HasIndexOfSelectedRow {
 extension ForecastViewController: ForecastViewInput {
     //MARK: run once
     func setHeaders(with forecasts: [Forecast]) {
-        self.forecasts = forecasts
-        collectionView.reloadData()
+        DispatchQueue.main.async {
+            self.forecasts = forecasts
+            debugPrint(forecasts)
+            self.collectionView.reloadData()
+        }
     }
     
     func setDataForCell(for data: [BarChartDataEntry], to indexPath: IndexPath) {
-        if  let cell = collectionView.cellForItem(at: indexPath) as? ForecastCell,
-            let forecasts = forecasts {
-            debugPrint("setDataForCell")
-            dataForOpenedCell[indexPath] = data
-            cell.configureCell(forecasts[indexPath.item], data)
+        DispatchQueue.main.async {
+            if  let cell = self.collectionView.cellForItem(at: indexPath) as? ForecastCell,
+                let forecasts = self.forecasts {
+//                debugPrint("setDataForCell")
+                self.dataForOpenedCell[indexPath] = data
+                cell.configureCell(forecasts[indexPath.item], data)
+            }
+            
         }
     }
 }

@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        CityManager.shared.getApiKey{ result in
+        Settings.shared.getApiKeys{ result in
             switch result {
             case .success:
                 DispatchQueue.main.async {
@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     self.window = window
                 }
             case .error:
-                debugPrint("error")
+                debugPrint("SceneDelegate/getApiKeys/error")
             }
             
         }

@@ -24,9 +24,7 @@ final class CacheManager: СacheManagerProtocol {
     
     func loadHistorySearchFromMemory() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1)  {
-            let cities : [City] = [
-                City(name: "Moscow", center: (0.0, 0.0))
-            ]
+            let cities : [City] = []
             self.output?.citiesFromCacheDidLoad(for: cities)
         }
     }

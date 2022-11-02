@@ -8,6 +8,19 @@
 import UIKit
 import Charts
 
+final class IntFormatter: ValueFormatter, AxisValueFormatter {
+    func stringForValue(_ value: Double, axis: Charts.AxisBase?) -> String {
+//        axis.
+        let intValue = Int(value)
+        return "\(intValue)"
+    }
+    
+    func stringForValue(_ value: Double, entry: Charts.ChartDataEntry, dataSetIndex: Int, viewPortHandler: Charts.ViewPortHandler?) -> String {
+        let intValue = Int(value)
+        return "\(intValue)"
+    }
+}
+
 final class ForecastCell: UICollectionViewCell {
     
     let containerView: UIView = {
@@ -36,7 +49,6 @@ final class ForecastCell: UICollectionViewCell {
         return label
     }()
     
-    
     lazy var chartView: LineChartView = {
         let chartView = LineChartView()
         chartView.delegate = self
@@ -47,6 +59,9 @@ final class ForecastCell: UICollectionViewCell {
         chartView.rightAxis.enabled = false
         chartView.leftAxis.enabled = false
         chartView.xAxis.enabled = true
+        chartView.xAxis.granularityEnabled = true
+        chartView.xAxis.granularity = 1.0
+        
         chartView.legend.enabled = false
         chartView.pinchZoomEnabled = false
         chartView.dragEnabled = true
@@ -58,15 +73,16 @@ final class ForecastCell: UICollectionViewCell {
         chartView.drawGridBackgroundEnabled = false
         chartView.zoomToCenter(scaleX: 4, scaleY: 1)
         chartView.xAxis.drawGridLinesEnabled = false
+//        chartView.xAxis.valueFormatter = IntFormatter()
         chartView.xAxis.labelFont = UIFont.boldSystemFont(ofSize: Settings.shared.dateFontHeight / 1.5)
         chartView.highlightPerTapEnabled = false
         chartView.dragYEnabled = false
         chartView.dragDecelerationEnabled = true
         chartView.highlightPerDragEnabled = false
         chartView.extraBottomOffset = chartView.xAxis.labelFont.xHeight
-        chartView.moveViewToX(3)
+        
+//        chartView.moveViewToX(3)
         chartView.xAxis.axisLineColor = .clear
-
         return chartView
     }()
     
@@ -77,16 +93,18 @@ final class ForecastCell: UICollectionViewCell {
         lineSet.lineWidth = 3
         lineSet.drawValuesEnabled = true
         lineSet.setColor(NSUIColor(red: 107/255, green: 243/255, blue: 173/255, alpha: 1))
-        lineSet.fill = Fill(color: NSUIColor(red: 107/255, green: 243/255, blue: 173/255, alpha: 1))
+        lineSet.fill = ColorFill(color: NSUIColor(red: 107/255, green: 243/255, blue: 173/255, alpha: 1))
         lineSet.fillAlpha = 0.78
         lineSet.drawFilledEnabled = true
         lineSet.circleRadius = 0
         lineSet.valueFont = .boldSystemFont(ofSize: Settings.shared.dateFontHeight)
         lineSet.drawCirclesEnabled = false
-        lineSet.valueFormatter = DefaultValueFormatter(decimals: 0)
+        
+        lineSet.valueFormatter = IntFormatter()
         lineSet.visible = true
         let chartData = LineChartData(dataSet: lineSet)
         chartData.setDrawValues(true)
+//        chartData.
         chartData.setValueTextColor(.black)
         self.chartView.data = chartData
         if chartView.alpha == 0 {
@@ -155,10 +173,10 @@ final class ForecastCell: UICollectionViewCell {
         
     }
     
-    func configureCell(_ forecast: Forecast,_ data: [BarChartDataEntry]?){
+    func configureCell(_ forecast: Forecast,_ data: [BarChartDataEntry]?) {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM"
-        
+        DispatchQueue.main.async {
         self.dateLabel.text = formatter.string(from: forecast.date)
         self.tempLabel.text = "\(forecast.temp)°C " + forecast.emojiState
         
@@ -166,13 +184,12 @@ final class ForecastCell: UICollectionViewCell {
             
             
             self.setData(data)
-            setData(data)
         } else {
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
                 self.chartView.alpha = 0
             }, completion: nil)
         }
-        
+    }
     }
     
     override init(frame: CGRect) {

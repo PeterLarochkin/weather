@@ -28,7 +28,7 @@ protocol SearchViewOutput: AnyObject {
 }
 
 protocol SearchInteractorInput: AnyObject {
-    func cityDidChosed(for city: City)
+    func cityDidSelect(for city: City)
     func setCachedCities()
     func textFieldDidChange(with text: String)
 }

@@ -35,7 +35,7 @@ extension SearchPresenter: SearchViewOutput {
     
     func cellDidTapped(for city: City) {
         debugPrint("cellDidTapped")
-        interactor.cityDidChosed(for: city)
+        interactor.cityDidSelect(for: city)
     }
 
 }

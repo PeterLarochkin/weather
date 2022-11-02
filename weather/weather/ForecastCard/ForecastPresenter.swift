@@ -56,12 +56,13 @@ extension ForecastPresenter: ForecastInteractorOutput {
                 let indexDateElement = mappingIndexDate?.enumerated().filter({ element in
                     Calendar.current.isDate(firstDate, equalTo: element.element, toGranularity: .day) }).first {
                 let data = Array(weather.enumerated()).map({ element in
-                    BarChartDataEntry(x: Double(element.offset), y: Double(element.element.temp))
+                    let hour = Calendar.current.dateComponents([.hour], from: element.element.date).hour!
+                    return BarChartDataEntry(x: Double(hour), y: Double(element.element.temp))
                 })
                 view?.setDataForCell(for: data, to: IndexPath(row: indexDateElement.offset, section: 0))
             }
             
-        case .month:
+        case .longTerm:
             debugPrint("weatherDidLoadedMonth")
             mappingIndexDate = weather.map { $0.date }
             view?.setHeaders(with: weather)

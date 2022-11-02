@@ -48,7 +48,7 @@ final class SuggestionCell: UITableViewCell {
     }
     
     func configureCell(_ city: City){
-        self.cityLabel.text = city.name + " \(city.center.0), \(city.center.1)"
+        self.cityLabel.text = city.name //+ " \(city.center.0), \(city.center.1)"
         self.lastWeatherStatusLabel.text = ""
     }
     

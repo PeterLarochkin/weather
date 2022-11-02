@@ -22,7 +22,7 @@ extension ForecastInteractor: ForecastInteractorInput {
     func viewDidLoad(for city: City) {
         debugPrint("viewDidLoad")
         WeatherManager.shared.output = self
-        WeatherManager.shared.loadWeatherForecast(city, .month, Date())
+        WeatherManager.shared.loadWeatherForecast(city, .longTerm, Date())
     }
 }
 extension ForecastInteractor: WeatherManagerOutput {

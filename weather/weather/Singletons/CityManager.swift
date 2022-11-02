@@ -7,27 +7,25 @@
 
 import Foundation
 import Firebase
-import FirebaseFirestore
 
-
-struct Feature: Codable {
-    var center: [Double]
-    var placeName: String
-    enum CodingKeys: String, CodingKey {
-        case placeName = "place_name"
-        case center
-    }
-}
 enum Result {
     case success
     case error
 }
-struct FeatureCollection: Codable {
-    let features: [Feature]
-    let query: [String]
+
+
+
+
+
+struct Feature: Codable {
+    let name: String
+    let localNames: [String : String]
+    let lat : Double
+    let lon: Double
+    let country: String
     enum CodingKeys: String, CodingKey {
-        case features
-        case query
+        case localNames = "local_names"
+        case name, lat, lon, country
     }
 }
 
@@ -41,15 +39,18 @@ protocol CityManagerOutput: AnyObject {
 }
 
 protocol CityManagerProtocol: AnyObject {
+    var apiKey: String? { get set }
     var output: CityManagerOutput? { get set }
     func loadCitySuggestions(_ citySearchRequest: String)
-    func getApiKey(complition: @escaping (Result) -> ())
 }
 
 final class CityManager: CityManagerProtocol {
     func loadCitySuggestions(_ citySearchRequest: String) {
-        let language = Locale.preferredLanguages[0].split(separator: "-").first
-        let link = "https://api.maptiler.com/geocoding/\(citySearchRequest).json?key=\(String(describing: apiKey!))&language=\(language)"
+        guard let language = Locale.preferredLanguages[0].split(separator: "-").first else {
+            return
+        }
+
+        let link = "https://api.openweathermap.org/geo/1.0/direct?q=\(citySearchRequest)&limit=5&appid=\(String(describing: apiKey!))"
         debugPrint(link)
         if let urlString = link.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
            let url = URL(string: urlString) {
@@ -58,9 +59,10 @@ final class CityManager: CityManagerProtocol {
             let task = URLSession.shared.dataTask(with: url) { data, response, error in
                 if let data = data {
                     let jsonDecoder = JSONDecoder()
-                    if let featureCollection = try? jsonDecoder.decode(FeatureCollection.self, from: data) {
-                        let cities = featureCollection.features.compactMap { feature in
-                            City(name: feature.placeName, center: (feature.center[0], feature.center[1]))
+                    if let featureCollection = try? jsonDecoder.decode([Feature].self, from: data) {
+                        let cities = featureCollection.compactMap { feature in
+                            let name = feature.localNames[String(language)] ?? feature.name
+                            return City(name: name, center: (feature.lat, feature.lon))
                         }
                         self.output?.citySuggestionsDidLoaded(for: cities)
                     }
@@ -76,26 +78,7 @@ final class CityManager: CityManagerProtocol {
     
     var apiKey: String?
     
-    func getApiKey(complition: @escaping (Result) -> ()) {
-        let db = Firestore.firestore()
 
-        let docRef = db.collection("APIs").document("maptiler")
-
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                let data = document.data()
-                if let data = data,
-                   let key = data["key"] as? String {
-                    self.apiKey = key
-                    complition(.success)
-                } else {
-                    complition(.error)
-                }
-            } else {
-                complition(.error)
-            }
-        }
-    }
     weak var output: CityManagerOutput?
     static let shared: CityManagerProtocol = CityManager()
     private init () { }

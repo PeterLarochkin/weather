@@ -185,6 +185,7 @@ extension WeatherManager: WeatherManagerProtocol {
         if cachedQuery.keys.contains(key) {
             let response = cachedQuery[key]!
             let forecasts: [Forecast] = prepareData(response, period, discoveredTime)
+                                        .sorted(by: {$0.date.compare($1.date) == .orderedAscending } )
             output?.weatherDidLoaded(for: forecasts, for: period)
             
         } else {
@@ -202,6 +203,10 @@ extension WeatherManager: WeatherManagerProtocol {
                         do {
                             let forecastResponse = try JSONDecoder().decode(ForecastResponse.self, from: data)
                             let forecasts: [Forecast] = self.prepareData(forecastResponse, period, discoveredTime)
+                                                            .sorted(by: {$0.date.compare($1.date) == .orderedAscending } )
+                            
+                                                            
+                            self.cachedQuery[key] = forecastResponse
                             self.output?.weatherDidLoaded(for: forecasts, for: period)
                             //                            debugPrint(forecastResponse)
                         } catch let err {

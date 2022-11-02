@@ -19,10 +19,10 @@ enum Result {
 
 struct Feature: Codable {
     let name: String
-    let localNames: [String : String]
+    let localNames: [String : String]?
     let lat : Double
     let lon: Double
-    let country: String
+    let country: String?
     enum CodingKeys: String, CodingKey {
         case localNames = "local_names"
         case name, lat, lon, country
@@ -58,10 +58,12 @@ final class CityManager: CityManagerProtocol {
             request.httpMethod = "GET"
             let task = URLSession.shared.dataTask(with: url) { data, response, error in
                 if let data = data {
+                    debugPrint(String(data: data, encoding: .utf8))
                     let jsonDecoder = JSONDecoder()
                     if let featureCollection = try? jsonDecoder.decode([Feature].self, from: data) {
+                        
                         let cities = featureCollection.compactMap { feature in
-                            let name = feature.localNames[String(language)] ?? feature.name
+                            let name = feature.localNames?[String(language)] ?? feature.name
                             return City(name: name, center: (feature.lat, feature.lon))
                         }
                         self.output?.citySuggestionsDidLoaded(for: cities)

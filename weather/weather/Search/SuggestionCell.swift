@@ -26,7 +26,7 @@ final class SuggestionCell: UITableViewCell {
         return label
     }()
 
-    private func layoutLabels(){
+    private func layoutLabels() {
         NSLayoutConstraint.activate([
 //            lastWeatherStatusLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4),
 //            lastWeatherStatusLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),

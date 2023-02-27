@@ -26,7 +26,7 @@ extension SearchPresenter: SearchModuleInput {
 
 extension SearchPresenter: SearchViewOutput {
     func viewDidLoad() {
-        interactor.setCachedCities()
+        interactor.viewDidLoad()
     }
     
     func textFieldDidChange(with text: String) {
@@ -41,6 +41,14 @@ extension SearchPresenter: SearchViewOutput {
 }
 
 extension SearchPresenter: SearchInteractorOutput {
+    func unfreezeTextField() {
+        view?.unfreezeTextField()
+    }
+    
+    func freezeTextField() {
+        view?.freezeTextField()
+    }
+    
     func isTextFieldEmpty() -> Bool {
         guard let isEmpty = self.view?.isTextFieldEmpty() else {
             return true
@@ -53,7 +61,6 @@ extension SearchPresenter: SearchInteractorOutput {
             self.view?.setCitites(cities)
         }
     }
-    
     
     func openCityModule(for city: City) {
         debugPrint("openCityModule")

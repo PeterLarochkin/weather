@@ -29,8 +29,9 @@ final class SearchViewController: UIViewController {
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         searchTextField.font = .boldSystemFont(ofSize: Constants.heightOfSearchFont)
         searchTextField.isHidden = false
-        searchTextField.backgroundColor = .systemGray6
         searchTextField.borderStyle = .roundedRect
+        searchTextField.backgroundColor = .darkGray
+        searchTextField.isEnabled = false
         searchTextField.addTarget(self,
                                   action: #selector(searchTextFieldDidChange(_:)),
                                   for: .editingChanged)
@@ -93,7 +94,9 @@ final class SearchViewController: UIViewController {
         suggestionTableView.rowHeight = UITableView.automaticDimension
         suggestionTableView.estimatedRowHeight = 44
         setLayout()
-        output?.viewDidLoad()
+        DispatchQueue.global().async { [weak output] in
+            output?.viewDidLoad()
+        }
     }
 }
 
@@ -128,6 +131,17 @@ private extension SearchViewController {
 }
 
 extension SearchViewController: SearchViewInput {
+    func unfreezeTextField() {
+        self.searchTextField.isEnabled = true
+        UIView.animate(withDuration: 0.5){
+            self.searchTextField.backgroundColor = .systemGray6
+        }
+    }
+    
+    func freezeTextField() {
+        self.searchTextField.isEnabled = false
+    }
+    
     func isTextFieldEmpty() -> Bool {
         
             if let isEmpty = searchTextField.text?.isEmpty {

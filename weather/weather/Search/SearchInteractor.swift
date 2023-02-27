@@ -15,16 +15,24 @@ final class SearchInteractor {
 extension SearchInteractor: SearchInteractorInput {
     func textFieldDidChange(with text: String) {
         if text.count == 0 {
-            self.setCachedCities()
+            self.viewDidLoad()
         } else {
             CityManager.shared.output = self
             CityManager.shared.loadCitySuggestions(text)
         }
     }
     
-    func setCachedCities() {
+    func viewDidLoad() {
         CacheManager.shared.output = self
         CacheManager.shared.loadHistorySearchFromMemory()
+        Settings.shared.getApiKeys{ [weak output] result in
+            switch result {
+            case .success:
+                output?.unfreezeTextField()
+            case .error:
+                debugPrint("error")
+            }
+        }
     }
     
     func cityDidSelect(for city: City) {

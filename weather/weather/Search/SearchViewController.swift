@@ -30,7 +30,6 @@ final class SearchViewController: UIViewController {
         searchTextField.font = .boldSystemFont(ofSize: Constants.heightOfSearchFont)
         searchTextField.isHidden = false
         searchTextField.borderStyle = .roundedRect
-        searchTextField.backgroundColor = .darkGray
         searchTextField.isEnabled = false
         searchTextField.addTarget(self,
                                   action: #selector(searchTextFieldDidChange(_:)),
@@ -88,7 +87,7 @@ final class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(searchTextField)
         view.addSubview(suggestionTableView)
         suggestionTableView.rowHeight = UITableView.automaticDimension

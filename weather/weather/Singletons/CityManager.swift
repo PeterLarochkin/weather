@@ -13,10 +13,6 @@ enum Result {
     case error
 }
 
-
-
-
-
 struct Feature: Codable {
     let name: String
     let localNames: [String : String]?
@@ -63,7 +59,10 @@ final class CityManager: CityManagerProtocol {
                     if let featureCollection = try? jsonDecoder.decode([Feature].self, from: data) {
                         
                         let cities = featureCollection.compactMap { feature in
-                            let name = feature.localNames?[String(language)] ?? feature.name
+                            var name = feature.localNames?[String(language)] ?? feature.name
+                            if let country = feature.country {
+                                name = name + " (\(country))"
+                            }
                             return City(name: name, center: (feature.lat, feature.lon))
                         }
                         self.output?.citySuggestionsDidLoaded(for: cities)

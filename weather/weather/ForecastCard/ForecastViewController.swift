@@ -35,7 +35,7 @@ final class ForecastViewController: UIViewController {
         let collectionView = UICollectionView(frame: .null, collectionViewLayout: CardLayout())
         let layout = CardLayout()
         collectionView.collectionViewLayout = layout
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .systemBackground
         collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: "ForecastCell")
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -66,7 +66,7 @@ final class ForecastViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .systemBackground
         view.addSubview(collectionView)
         setLayout()
         

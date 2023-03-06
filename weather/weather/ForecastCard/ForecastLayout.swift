@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class CardLayout: UICollectionViewLayout {
-//    https://manikarthi-vaiha.medium.com/apple-wallet-app-design-in-ios-c292304fcc13
+    //    https://manikarthi-vaiha.medium.com/apple-wallet-app-design-in-ios-c292304fcc13
     var bottomOffsetOfExpandedCard: CGFloat = 10
     var contentHeight: CGFloat = 0.0
     var cachedAttributes = [UICollectionViewLayoutAttributes]()
@@ -35,7 +35,7 @@ class CardLayout: UICollectionViewLayout {
         } else {
             size.height = contentHeight
         }
-//        print("Contend", contentHeight)
+        //        print("Contend", contentHeight)
         return size
     }
     

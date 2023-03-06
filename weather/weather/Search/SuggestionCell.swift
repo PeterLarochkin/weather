@@ -15,6 +15,7 @@ final class SuggestionCell: UITableViewCell {
 //        label.font = .boldSystemFont(ofSize: Settings.shared.cityFontHeight)/
         label.numberOfLines = -1
         label.font = .systemFont(ofSize: Settings.shared.cityFontHeight, weight: .bold)
+        label.textColor = .label
         return label
     }()
     
@@ -41,7 +42,7 @@ final class SuggestionCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = .white
+        self.backgroundColor = .systemBackground
         self.addSubview(cityLabel)
 //        self.addSubview(lastWeatherStatusLabel)
         layoutLabels()

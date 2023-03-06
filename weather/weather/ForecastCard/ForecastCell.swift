@@ -10,7 +10,7 @@ import Charts
 
 final class IntFormatter: ValueFormatter, AxisValueFormatter {
     func stringForValue(_ value: Double, axis: Charts.AxisBase?) -> String {
-//        axis.
+        //        axis.
         let intValue = Int(value)
         return "\(intValue)"
     }
@@ -37,7 +37,7 @@ final class ForecastCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .boldSystemFont(ofSize: Settings.shared.dateFontHeight)
         label.textAlignment = .left
-        label.textColor = .black
+        label.textColor = .label
         return label
     }()
     
@@ -46,6 +46,7 @@ final class ForecastCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .boldSystemFont(ofSize: Settings.shared.dateFontHeight)
         label.textAlignment = .right
+        label.textColor = .label
         return label
     }()
     
@@ -73,7 +74,7 @@ final class ForecastCell: UICollectionViewCell {
         chartView.drawGridBackgroundEnabled = false
         chartView.zoomToCenter(scaleX: 4, scaleY: 1)
         chartView.xAxis.drawGridLinesEnabled = false
-//        chartView.xAxis.valueFormatter = IntFormatter()
+        //        chartView.xAxis.valueFormatter = IntFormatter()
         chartView.xAxis.labelFont = UIFont.boldSystemFont(ofSize: Settings.shared.dateFontHeight / 1.5)
         chartView.highlightPerTapEnabled = false
         chartView.dragYEnabled = false
@@ -81,7 +82,7 @@ final class ForecastCell: UICollectionViewCell {
         chartView.highlightPerDragEnabled = false
         chartView.extraBottomOffset = chartView.xAxis.labelFont.xHeight
         
-//        chartView.moveViewToX(3)
+        //        chartView.moveViewToX(3)
         chartView.xAxis.axisLineColor = .clear
         return chartView
     }()
@@ -98,21 +99,22 @@ final class ForecastCell: UICollectionViewCell {
         lineSet.drawFilledEnabled = true
         lineSet.circleRadius = 0
         lineSet.valueFont = .boldSystemFont(ofSize: Settings.shared.dateFontHeight)
+
         lineSet.drawCirclesEnabled = false
         
         lineSet.valueFormatter = IntFormatter()
         lineSet.visible = true
         let chartData = LineChartData(dataSet: lineSet)
         chartData.setDrawValues(true)
-//        chartData.
-        chartData.setValueTextColor(.black)
+        //        chartData.
+        chartData.setValueTextColor(.label)
         self.chartView.data = chartData
         if chartView.alpha == 0 {
-//            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-                    self.chartView.alpha = 1
-                }, completion: nil)
-//            }
+            //            DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+                self.chartView.alpha = 1
+            }, completion: nil)
+            //            }
         }
     }
     
@@ -177,19 +179,20 @@ final class ForecastCell: UICollectionViewCell {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM"
         DispatchQueue.main.async {
-        self.dateLabel.text = formatter.string(from: forecast.date)
-        self.tempLabel.text = "\(forecast.temp)°C " + forecast.emojiState
-        
-        if let data = data {
+            self.dateLabel.text = formatter.string(from: forecast.date)
+            self.tempLabel.text = "\(forecast.temp)°C " + forecast.emojiState
             
-            
-            self.setData(data)
-        } else {
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-                self.chartView.alpha = 0
-            }, completion: nil)
+            if let data = data {
+                
+                
+                self.setData(data)
+            }
+            else {
+                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+                    self.chartView.alpha = 0
+                }, completion: nil)
+            }
         }
-    }
     }
     
     override init(frame: CGRect) {
@@ -199,7 +202,7 @@ final class ForecastCell: UICollectionViewCell {
         chartView.alpha = 0
         addViews()
         setLayout()
-
+        
         
     }
     func addViews() {

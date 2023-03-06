@@ -1,5 +1,5 @@
 # weather
-Simple and beautiful (I hope) weather app
+Simple weather app
 
 # Goal interface
 Launch             |  Month Preview           |                     Day Preview      |

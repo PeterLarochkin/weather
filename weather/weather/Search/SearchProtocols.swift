@@ -18,7 +18,6 @@ protocol SearchModuleOutput: AnyObject {
 
 protocol SearchViewInput: AnyObject {
     func setCitites(_ cities: [City])
-    func isTextFieldEmpty()-> Bool
     func unfreezeTextField()
     func freezeTextField()
 }
@@ -38,7 +37,6 @@ protocol SearchInteractorInput: AnyObject {
 protocol SearchInteractorOutput: AnyObject {
     func openCityModule(for city: City)
     func setCities(for cities: [City])
-    func isTextFieldEmpty()-> Bool
     func unfreezeTextField()
     func freezeTextField()
 }

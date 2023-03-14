@@ -140,18 +140,7 @@ extension SearchViewController: SearchViewInput {
     func freezeTextField() {
         self.searchTextField.isEnabled = false
     }
-    
-    func isTextFieldEmpty() -> Bool {
-        
-            if let isEmpty = searchTextField.text?.isEmpty {
-                return isEmpty
-            } else {
-                return true
-            }
-        
-        
-    }
-    
+
     func setCitites(_ cities: [City]) {
         self.cities = cities
 

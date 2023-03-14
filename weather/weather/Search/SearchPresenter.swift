@@ -49,13 +49,6 @@ extension SearchPresenter: SearchInteractorOutput {
         view?.freezeTextField()
     }
     
-    func isTextFieldEmpty() -> Bool {
-        guard let isEmpty = self.view?.isTextFieldEmpty() else {
-            return true
-        }
-        return isEmpty
-    }
-    
     func setCities(for cities: [City]) {
         DispatchQueue.main.async {
             self.view?.setCitites(cities)

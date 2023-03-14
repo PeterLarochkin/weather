@@ -15,7 +15,8 @@ final class SearchInteractor {
 extension SearchInteractor: SearchInteractorInput {
     func textFieldDidChange(with text: String) {
         if text.count == 0 {
-            self.viewDidLoad()
+            CacheManager.shared.output = self
+            CacheManager.shared.loadHistorySearchFromMemory()
         } else {
             CityManager.shared.output = self
             CityManager.shared.loadCitySuggestions(text)
@@ -38,12 +39,19 @@ extension SearchInteractor: SearchInteractorInput {
     func cityDidSelect(for city: City) {
         debugPrint("cityDidSelect")
         self.output?.openCityModule(for: city)
+        DispatchQueue.global().async {
+            CacheManager.shared.addCityToHistory(city)
+        }
+
     }
 }
 
 extension SearchInteractor: CacheManagerOutput {
-    func citiesFromCacheDidLoad(for cities: [City]) {
-        self.output?.setCities(for: cities)
+    func citiesFromCacheDidLoad(for cities: [CityData]) {
+        let tranformedCities = cities.map { cityData in
+            City(name: cityData.name ?? "", center: (cityData.lat, cityData.lon))
+        }
+        self.output?.setCities(for: tranformedCities)
     }
 }
 
